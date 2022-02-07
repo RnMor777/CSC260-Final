@@ -16,6 +16,7 @@ namespace CSC260_Final {
 
         private void GameScreenForm_Load(object sender, EventArgs e) {
             this.TransparencyKey = Color.Empty;
+            Game game = new Game();
         }
 
         #region Board Click Events
