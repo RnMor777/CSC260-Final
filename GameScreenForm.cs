@@ -16,14 +16,6 @@ namespace CSC260_Final {
 
         private void GameScreenForm_Load(object sender, EventArgs e) {
             this.TransparencyKey = Color.Empty;
-            Knight temp = new Knight("White", 2, 4);
-            int[,] ret = temp.PossibleMoves();
-            for (int i = 0; i<8; i++) {
-                for (int j= 0; j < 8; j++) {
-                    Console.Write(ret[i, j]);
-                }
-                Console.WriteLine();
-            }
         }
 
         #region Board Click Events

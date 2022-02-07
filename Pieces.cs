@@ -33,5 +33,7 @@ namespace CSC260_Final {
             get { return _currentCol; }
             set { _currentCol = value; }
         }
+
+        public abstract int[,] PossibleMoves();
     }
 }

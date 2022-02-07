@@ -15,7 +15,7 @@ namespace CSC260_Final {
             this.CurrentCol = col;
         }
 
-        public int[,] PossibleMoves () {
+        public override int[,] PossibleMoves () {
             int[,] markArr = new int[8,8];
 
             if (Color == "White") {
