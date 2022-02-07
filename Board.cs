@@ -10,8 +10,6 @@ namespace CSC260_Final {
         private Pieces[] _pieces;
 
         public Board () {
-            _pieces = new Pieces[64]; 
-            _pieces[0] = new Pieces();
 
         }
 
