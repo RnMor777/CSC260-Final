@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CSC260_Final {
     internal abstract class Pieces {
@@ -12,6 +13,7 @@ namespace CSC260_Final {
         private float _pieceWorth;
         private int _currentRow;
         private int _currentCol;
+        private System.Drawing.Image _image;
 
         public string Name {
             get { return _name; }
@@ -32,6 +34,10 @@ namespace CSC260_Final {
         public int CurrentCol {
             get { return _currentCol; }
             set { _currentCol = value; }
+        }
+        public System.Drawing.Image Image {
+            get { return _image; }
+            set { _image = value; }
         }
 
         public abstract int[,] PossibleMoves();

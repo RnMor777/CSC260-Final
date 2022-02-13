@@ -13,6 +13,7 @@ namespace CSC260_Final {
             this.Color = color;
             this.CurrentRow = row;
             this.CurrentCol = col;
+            this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WKnight:Properties.Resources.BKnight));
         }
 
         public override int[,] PossibleMoves () {

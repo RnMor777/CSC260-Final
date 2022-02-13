@@ -30,5 +30,9 @@ namespace CSC260_Final {
             _fen = fen;
             _pgn = pgn;
         }
+
+        public void Run () {
+            _board.Render();
+        }
     }
 }
