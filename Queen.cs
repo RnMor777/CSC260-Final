@@ -16,26 +16,30 @@ namespace CSC260_Final {
             this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WQueen:Properties.Resources.BQueen));
         }
 
-        public override int[,] PossibleMoves () {
+        public override int[,] PossibleMoves (Board board) {
             int[,] markArr = new int[8,8];
+            int[] offsetI = { 1, 1, -1, -1, 1, -1, 0, 0};
+            int[] offsetJ = { 1, -1, 1, -1, 0, 0, 1, -1};
+            int i, j, k;
 
-            for (int i = 0; i < 8; i++) {
-                if (CurrentRow + i < 8 && CurrentCol + i < 8) {
-                    markArr[CurrentRow + i, CurrentCol + i] = 1;
+            for (k = 0; k < 8; k++) {
+                i = CurrentRow + offsetI[k];
+                j = CurrentCol + offsetJ[k];
+                while (IsWithinBoard(i, j)) {
+                    if (board.PieceAt(i, j).Color == "null") {
+                        markArr[i, j] = 1;
+                    }
+                    else if (board.PieceAt(i, j).Color == Color) {
+                        break;
+                    }
+                    else {
+                        markArr[i, j] = 1;
+                        break;
+                    }
+                    i += offsetI[k];
+                    j += offsetJ[k];
                 }
-                if (CurrentRow - i >= 0 && CurrentCol + i < 8) {
-                    markArr[CurrentRow - i, CurrentCol + i] = 1;
-                }
-                if (CurrentRow + i < 8 && CurrentCol - i >= 0) {
-                    markArr[CurrentRow + i, CurrentCol - i] = 1;
-                }
-                if (CurrentRow + i >= 0 && CurrentCol - i >= 0) {
-                    markArr[CurrentRow - i, CurrentCol - i] = 1;
-                }
-                markArr[CurrentRow, i] = 1;
-                markArr[i, CurrentCol] = 1;
             }
-            markArr[CurrentRow, CurrentCol] = 0;
 
             return markArr;
         }

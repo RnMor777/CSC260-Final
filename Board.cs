@@ -47,8 +47,23 @@ namespace CSC260_Final {
                     else {
                         GameScreenForm.BtnArr[i, j].Image = null;
                     }
+
+                    if ((i+j)%2 == 0) {
+                        GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.FromArgb(237, 209, 167);
+                    }
+                    else {
+                        GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.FromArgb(191, 135, 73);
+                    }
                 }
             }
+        }
+
+        public Pieces PieceAt (int row, int col) {
+            return _pieces[row, col] ?? new Pawn("null", -1, -1);
+        }
+
+        public void SetPieceAt (int row, int col, Pieces piece) {
+            _pieces[row, col] = piece;
         }
     }
 }

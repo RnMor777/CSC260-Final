@@ -16,15 +16,13 @@ namespace CSC260_Final {
             this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WKing:Properties.Resources.BKing));
         }
 
-        public override int[,] PossibleMoves () {
+        public override int[,] PossibleMoves (Board board) {
             int[,] markArr = new int[8,8];
 
             for (int i = -1; i < 2; i++) {
-                if (CurrentRow + i < 8 && CurrentRow - i >= 0) {
-                    for (int j = -1; j < 2; j++) {
-                        if (CurrentCol + j < 8 && CurrentCol - j >= 0) {
-                            markArr[CurrentRow + i, CurrentCol + j] = 1;
-                        }
+                for (int j = -1; j < 2; j++) {
+                    if (IsWithinBoard(CurrentRow+i, CurrentCol+j) && board.PieceAt(CurrentRow + i, CurrentCol + j).Color != Color ) {
+                        markArr[CurrentRow + i, CurrentCol + j] = 1;
                     }
                 }
             }

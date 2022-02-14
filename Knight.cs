@@ -16,26 +16,21 @@ namespace CSC260_Final {
             this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WKnight:Properties.Resources.BKnight));
         }
 
-        public override int[,] PossibleMoves () {
+        public override int[,] PossibleMoves (Board board) {
             int[,] markArr = new int[8,8];
-            
-            if (CurrentRow - 2 >= 0 && CurrentCol - 1 >= 0) 
-                markArr[CurrentRow - 2, CurrentCol - 1] = 1;
-            if (CurrentRow - 1 >= 0 && CurrentCol - 2 >= 0)
-                markArr[CurrentRow - 1, CurrentCol - 2] = 1;
-            if (CurrentRow - 1 >= 0 && CurrentCol + 2 < 8)
-                markArr[CurrentRow - 1, CurrentCol + 2] = 1;
-            if (CurrentRow - 2 >= 0 && CurrentCol + 1 < 8)
-                markArr[CurrentRow - 2, CurrentCol + 1] = 1;
+            int[] offsetI = { -2, -2, -1, -1, 1, 1, 2, 2 };
+            int[] offsetJ = { -1, 1, -2, 2, -2, 2, -1, 1 };
+            int i, j, k;
 
-            if (CurrentRow + 2 < 8 && CurrentCol - 1 >= 0) 
-                markArr[CurrentRow + 2, CurrentCol - 1] = 1;
-            if (CurrentRow + 1 < 8 && CurrentCol - 2 >= 0)
-                markArr[CurrentRow + 1, CurrentCol - 2] = 1;
-            if (CurrentRow + 1 < 8 && CurrentCol + 2 < 8)
-                markArr[CurrentRow + 1, CurrentCol + 2] = 1;
-            if (CurrentRow + 2 < 8 && CurrentCol + 1 < 8)
-                markArr[CurrentRow + 2, CurrentCol + 1] = 1;
+            for (k = 0; k < 8; k++) {
+                i = CurrentRow + offsetI[k];
+                j = CurrentCol + offsetJ[k];
+                if (IsWithinBoard (i, j)) {
+                    if (board.PieceAt(i, j).Color != Color) {
+                        markArr[i, j] = 1;
+                    }
+                }
+            }
 
             return markArr;
         }
