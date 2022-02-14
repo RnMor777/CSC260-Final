@@ -36,6 +36,11 @@ namespace CSC260_Final {
             _board.Render();
         }
 
+        public void EscapeMove () {
+            _activePiece = null;
+            _board.Render();
+        }
+
         public void AttemptMove (int row, int col) {
             if (_activePiece != null && _activeMoves[row, col] == 1) {
                 DoMove(row, col);
