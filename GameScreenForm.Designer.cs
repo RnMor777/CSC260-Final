@@ -105,6 +105,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.labelCheck = new System.Windows.Forms.Label();
             this.BackgroundBorder.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1172,10 +1173,21 @@
             this.label1.TabIndex = 68;
             this.label1.Text = "1";
             // 
+            // labelCheck
+            // 
+            this.labelCheck.BackColor = System.Drawing.Color.Transparent;
+            this.labelCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCheck.ForeColor = System.Drawing.Color.Black;
+            this.labelCheck.Location = new System.Drawing.Point(173, 534);
+            this.labelCheck.Name = "labelCheck";
+            this.labelCheck.Size = new System.Drawing.Size(212, 32);
+            this.labelCheck.TabIndex = 71;
+            // 
             // GameScreenForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1075, 556);
+            this.ClientSize = new System.Drawing.Size(1075, 584);
+            this.Controls.Add(this.labelCheck);
             this.Controls.Add(this.H1);
             this.Controls.Add(this.G1);
             this.Controls.Add(this.F1);
@@ -1332,6 +1344,7 @@
         private System.Windows.Forms.Label labelC;
         private System.Windows.Forms.Label labelB;
         private System.Windows.Forms.Label labelA;
+        public System.Windows.Forms.Label labelCheck;
     }
 }
 

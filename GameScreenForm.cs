@@ -55,5 +55,8 @@ namespace CSC260_Final {
                 }
             };
         }
+
+        public static void UpdateCheckLabel (string newText) {
+        }
     }
 }

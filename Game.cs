@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CSC260_Final {
     internal class Game {
@@ -60,11 +61,17 @@ namespace CSC260_Final {
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
                         if (moves[i, j] == 1) {
-                            GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.LimeGreen;
-                            if (_board.PieceAt(i,j).Color != "null") {
-                                GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.Crimson;
+                            Board tmp = new Board(_board);
+                            tmp.SetPieceAt(i, j, clickedPiece);
+                            tmp.SetPieceAt(clickedPiece.CurrentRow, clickedPiece.CurrentCol, null);
+
+                            bool putIntoCheck = InCheck(tmp);
+                            if (!putIntoCheck) {
+                                GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.LimeGreen;
+                                if (_board.PieceAt(i, j).Color != "null") 
+                                    GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.Crimson;
+                                counter++;
                             }
-                            counter++;
                         }
                     }
                 }
@@ -83,7 +90,21 @@ namespace CSC260_Final {
             _board.SetPieceAt(row, col, _activePiece);
             _playerTurn = _playerTurn == "White" ? "Black" : "White";
             _activePiece = null;
+            if (InCheck (_board)) {
+                
+            }
             _board.Render();
+        }
+
+        private bool InCheck (Board board) {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    Pieces tmp = board.PieceAt(i, j);
+                    if (tmp.Color != "null" && tmp.Color != _playerTurn && board.WillCheck(tmp.PossibleMoves(board), _playerTurn)) 
+                        return true;
+                }
+            }
+            return false;
         }
     }
 }
