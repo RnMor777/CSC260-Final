@@ -57,21 +57,17 @@ namespace CSC260_Final {
             if (clickedPiece != null && clickedPiece.Color == _playerTurn) {
                 int[,] moves = clickedPiece.PossibleMoves(_board);
                 int counter = 0;
+                Board tmp = new Board(_board);
 
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
                         if (moves[i, j] == 1) {
-                            Board tmp = new Board(_board);
-                            tmp.SetPieceAt(i, j, clickedPiece);
-                            tmp.SetPieceAt(clickedPiece.CurrentRow, clickedPiece.CurrentCol, null);
-
-                            bool putIntoCheck = InCheck(tmp);
-                            if (!putIntoCheck) {
+                            //if (!putIntoCheck) {
                                 GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.LimeGreen;
                                 if (_board.PieceAt(i, j).Color != "null") 
                                     GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.Crimson;
                                 counter++;
-                            }
+                            //}
                         }
                     }
                 }
@@ -91,19 +87,15 @@ namespace CSC260_Final {
             _playerTurn = _playerTurn == "White" ? "Black" : "White";
             _activePiece = null;
             if (InCheck (_board)) {
-                
+                GameScreenForm.UpdateCheckLabel(_playerTurn + " in check");
+            }
+            else {
+                GameScreenForm.UpdateCheckLabel("");
             }
             _board.Render();
         }
 
-        private bool InCheck (Board board) {
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    Pieces tmp = board.PieceAt(i, j);
-                    if (tmp.Color != "null" && tmp.Color != _playerTurn && board.WillCheck(tmp.PossibleMoves(board), _playerTurn)) 
-                        return true;
-                }
-            }
+        public bool InCheck(Board board) {
             return false;
         }
     }

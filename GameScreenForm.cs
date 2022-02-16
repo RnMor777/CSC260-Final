@@ -12,6 +12,7 @@ namespace CSC260_Final {
     public partial class GameScreenForm : Form {
 
         private static Button[,] _btnArr;
+        private static Label _labelCheck;
         private Game _game;
 
         public static Button[,] BtnArr {
@@ -26,6 +27,7 @@ namespace CSC260_Final {
             _game = new Game();
 
             this.TransparencyKey = Color.Empty;
+            _labelCheck = labelCheck;
             _btnArr = new Button[,] {
                 { A8, B8, C8, D8, E8, F8, G8, H8},
                 { A7, B7, C7, D7, E7, F7, G7, H7},
@@ -57,6 +59,7 @@ namespace CSC260_Final {
         }
 
         public static void UpdateCheckLabel (string newText) {
+            _labelCheck.Text = newText;
         }
     }
 }
