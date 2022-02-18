@@ -78,5 +78,16 @@ namespace CSC260_Final {
         public void SetPieceAt (int row, int col, Pieces piece) {
             _pieces[row, col] = piece;
         }
+
+        public (int i, int j) KingPosition (string color) {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (this.PieceAt(i, j).Color == color && this.PieceAt(i,j).Name == "King") {
+                        return (i, j);
+                    }
+                }
+            }
+            return (-1, -1);
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace CSC260_Final {
         private StringBuilder _pgn;
         private int _halfmoves;
         private Pieces _activePiece;
-        private int[,] _activeMoves;
+        private List<(int i, int j)> _activeMoves;
         
         public Game () {
             _board = new Board ();
@@ -43,7 +43,7 @@ namespace CSC260_Final {
         }
 
         public void AttemptMove (int row, int col) {
-            if (_activePiece != null && _activeMoves[row, col] == 1) {
+            if (_activePiece != null && _activeMoves.Contains((row, col))) {
                 DoMove(row, col);
                 return;
             }
@@ -55,24 +55,28 @@ namespace CSC260_Final {
 
             Pieces clickedPiece = _board.PieceAt(row, col);
             if (clickedPiece != null && clickedPiece.Color == _playerTurn) {
-                int[,] moves = clickedPiece.PossibleMoves(_board);
-                int counter = 0;
-                Board tmp = new Board(_board);
+                List<(int i, int j)> moves = clickedPiece.PossibleMoves(_board);
 
-                for (int i = 0; i < 8; i++) {
-                    for (int j = 0; j < 8; j++) {
-                        if (moves[i, j] == 1) {
-                            //if (!putIntoCheck) {
-                                GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.LimeGreen;
-                                if (_board.PieceAt(i, j).Color != "null") 
-                                    GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.Crimson;
-                                counter++;
-                            //}
-                        }
-                    }
+                foreach ((int i, int j) in moves) {
+                    clickedPiece.CurrentRow = i;
+                    clickedPiece.CurrentCol = j;
+                    _board.SetPieceAt(i, j, clickedPiece);
+                    _board.SetPieceAt(row, col, null);
+                    bool retCheck = InCheck(_board, _playerTurn);
+                    _board.SetPieceAt(i, j, null);
+                    _board.SetPieceAt(row, col, clickedPiece);
+
+                    if (retCheck)
+                        continue;
+
+                    GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.LimeGreen;
+                    if (_board.PieceAt(i, j).Color != "null") 
+                        GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.Crimson;
                 }
+                clickedPiece.CurrentRow = row;
+                clickedPiece.CurrentCol = col;
 
-                if (counter > 0) {
+                if (moves.Capacity > 0) {
                     _activePiece = clickedPiece;
                     _activeMoves = moves;
                 }
@@ -86,17 +90,46 @@ namespace CSC260_Final {
             _board.SetPieceAt(row, col, _activePiece);
             _playerTurn = _playerTurn == "White" ? "Black" : "White";
             _activePiece = null;
-            if (InCheck (_board)) {
-                GameScreenForm.UpdateCheckLabel(_playerTurn + " in check");
-            }
-            else {
+
+            if (InCheck (_board, "White"))
+               GameScreenForm.UpdateCheckLabel("White in check");
+            else if (InCheck (_board, "Black"))
+               GameScreenForm.UpdateCheckLabel("Black in check");
+            else 
                 GameScreenForm.UpdateCheckLabel("");
-            }
+
             _board.Render();
         }
 
-        public bool InCheck(Board board) {
+        public bool InCheck(Board board, string color) {
+            (int i, int j) kingPos = board.KingPosition(color);
+
+            Rook procRook = new Rook(color, kingPos.i, kingPos.j);
+            foreach ((int i, int j) in procRook.PossibleMoves(board)) {
+                if (board.PieceAt(i, j).Name == "Queen" || board.PieceAt(i, j).Name == "Rook") {
+                    return true;
+                }
+            }
+
+            Bishop procBishop = new Bishop(color, kingPos.i, kingPos.j);
+            foreach ((int i, int j) in procBishop.PossibleMoves(board)) {
+                if (board.PieceAt(i, j).Name == "Queen" || board.PieceAt(i, j).Name == "Rook") {
+                    return true;
+                }
+            }
+
+            Bishop procKnight = new Bishop(color, kingPos.i, kingPos.j);
+            foreach ((int i, int j) in procKnight.PossibleMoves(board)) {
+                if (board.PieceAt(i, j).Name == "Knight") { 
+                    return true;
+                }
+            }
+
             return false;
+        }
+
+        public void ThreadRook () {
+
         }
     }
 }

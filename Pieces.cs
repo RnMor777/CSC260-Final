@@ -40,7 +40,7 @@ namespace CSC260_Final {
             set { _image = value; }
         }
 
-        public abstract int[,] PossibleMoves(Board board);
+        public abstract List<(int i, int j)> PossibleMoves(Board board);
 
         public bool IsWithinBoard (int row, int col) {
             if (row >= 0 && row < 8 && col >= 0 && col < 8) {

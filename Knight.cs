@@ -16,8 +16,8 @@ namespace CSC260_Final {
             this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WKnight:Properties.Resources.BKnight));
         }
 
-        public override int[,] PossibleMoves (Board board) {
-            int[,] markArr = new int[8,8];
+        public override List<(int i, int j)> PossibleMoves (Board board) {
+            List<(int i, int j)> retList = new List<(int, int)> ();
             int[] offsetI = { -2, -2, -1, -1, 1, 1, 2, 2 };
             int[] offsetJ = { -1, 1, -2, 2, -2, 2, -1, 1 };
             int i, j, k;
@@ -27,12 +27,12 @@ namespace CSC260_Final {
                 j = CurrentCol + offsetJ[k];
                 if (IsWithinBoard (i, j)) {
                     if (board.PieceAt(i, j).Color != Color) {
-                        markArr[i, j] = 1;
+                        retList.Add((i, j));
                     }
                 }
             }
 
-            return markArr;
+            return retList;
         }
     }
 }

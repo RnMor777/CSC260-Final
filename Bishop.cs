@@ -16,8 +16,8 @@ namespace CSC260_Final {
             this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WBishop:Properties.Resources.BBishop));
         }
 
-        public override int[,] PossibleMoves (Board board) {
-            int[,] markArr = new int[8,8];
+        public override List<(int i, int j)> PossibleMoves (Board board) {
+            List<(int i, int j)> retList = new List<(int, int)>();
             int[] offsetI = { 1, 1, -1, -1 };
             int[] offsetJ = { 1, -1, 1, -1 };
             int i, j, k;
@@ -27,21 +27,20 @@ namespace CSC260_Final {
                 j = CurrentCol + offsetJ[k];
                 while (IsWithinBoard(i, j)) {
                     if (board.PieceAt(i, j).Color == "null") {
-                        markArr[i, j] = 1;
+                        retList.Add((i, j));
                     }
                     else if (board.PieceAt(i, j).Color == Color) {
                         break;
                     }
                     else {
-                        markArr[i, j] = 1;
+                        retList.Add((i, j));
                         break;
                     }
                     i += offsetI[k];
                     j += offsetJ[k];
                 }
             }
-
-            return markArr;
+            return retList;
         }
     }
 }
