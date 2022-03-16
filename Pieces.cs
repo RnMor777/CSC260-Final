@@ -40,6 +40,10 @@ namespace CSC260_Final {
             set { _image = value; }
         }
 
+        public bool Equals (Pieces other) {
+            return _currentRow == other.CurrentRow && _currentCol == other.CurrentCol;
+        }
+
         public abstract List<(int i, int j)> PossibleMoves(Board board);
 
         public bool IsWithinBoard (int row, int col) {

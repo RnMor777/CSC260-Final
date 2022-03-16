@@ -17,6 +17,7 @@ namespace CSC260_Final {
         private int _halfmoves;
         private Pieces _activePiece;
         private List<(int i, int j)> _activeMoves;
+        private List<List<(int i, int j)>> checks;
         
         public Game () {
             _board = new Board ();
@@ -56,25 +57,13 @@ namespace CSC260_Final {
             Pieces clickedPiece = _board.PieceAt(row, col);
             if (clickedPiece != null && clickedPiece.Color == _playerTurn) {
                 List<(int i, int j)> moves = clickedPiece.PossibleMoves(_board);
+                moves = SieveCheck(moves, clickedPiece);
 
                 foreach ((int i, int j) in moves) {
-                    clickedPiece.CurrentRow = i;
-                    clickedPiece.CurrentCol = j;
-                    _board.SetPieceAt(i, j, clickedPiece);
-                    _board.SetPieceAt(row, col, null);
-                    bool retCheck = InCheck(_board, _playerTurn);
-                    _board.SetPieceAt(i, j, null);
-                    _board.SetPieceAt(row, col, clickedPiece);
-
-                    if (retCheck)
-                        continue;
-
                     GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.LimeGreen;
                     if (_board.PieceAt(i, j).Color != "null") 
                         GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.Crimson;
                 }
-                clickedPiece.CurrentRow = row;
-                clickedPiece.CurrentCol = col;
 
                 if (moves.Capacity > 0) {
                     _activePiece = clickedPiece;
@@ -91,17 +80,78 @@ namespace CSC260_Final {
             _playerTurn = _playerTurn == "White" ? "Black" : "White";
             _activePiece = null;
 
-            if (InCheck (_board, "White"))
+            /*if (InCheck (_board, "White"))
                GameScreenForm.UpdateCheckLabel("White in check");
             else if (InCheck (_board, "Black"))
                GameScreenForm.UpdateCheckLabel("Black in check");
             else 
-                GameScreenForm.UpdateCheckLabel("");
+                GameScreenForm.UpdateCheckLabel(""); */
 
             _board.Render();
         }
 
-        public bool InCheck(Board board, string color) {
+        public List<(int i, int j)> SieveCheck(List<(int i, int j)> moves, Pieces piece) {
+            int[] xmoves = { 1, 1,  1, 0, -1,  0, -1, -1 };
+            int[] ymoves = { 1, 0, -1, 1,  1, -1, -1,  0 };
+            bool[] noCheck = new bool[8];
+            (int i, int j) kingPos = _board.KingPosition(_playerTurn);
+            List<(int i, int j)> sievedMoves = new List<(int i, int j)>();
+            String oppPlayer = _playerTurn == "White" ? "Black" : "White";
+            Pieces tmp;
+            bool sieve;
+            int x, y;
+
+
+            _board.SetPieceAt(piece.CurrentRow, piece.CurrentCol, null);
+            foreach ((int i, int j) in moves) {
+                tmp = _board.PieceAt(i, j);
+                if (tmp.Color == "null") tmp = null;
+                _board.SetPieceAt(i, j, piece);
+                sieve = false;
+                for (int k = 0; k < 8; k++) {
+                    if (noCheck[k])
+                        continue;
+
+                    x = kingPos.i;
+                    y = kingPos.j;
+                    do {
+                        x += xmoves[k];
+                        y += ymoves[k];
+                    } while (x >= 0 && x < 8 && y >= 0 && y < 8 && _board.PieceAt(x, y).Color == "null");
+
+                    if (x < 0 || x > 7 || y < 0 || y > 7) 
+                        continue;
+
+                    Pieces foundPiece = _board.PieceAt(x, y);
+                    if (k % 2 == 0) {
+                        if (foundPiece.Color == oppPlayer && (foundPiece.Name == "Queen" || foundPiece.Name == "Bishop")) {
+                            sieve = true;
+                        }
+                        else if (!foundPiece.Equals(piece)) {
+                            noCheck[k] = true;
+                        }
+                    }
+                    else {
+                        if (foundPiece.Color == oppPlayer && (foundPiece.Name == "Queen" || foundPiece.Name == "Rook")) {
+                            sieve = true;
+                        }
+                        else if (!foundPiece.Equals(piece)) {
+                            noCheck[k] = true;
+                        }
+
+                    }
+                }
+                _board.SetPieceAt(i, j, tmp);
+
+                if (!sieve)
+                    sievedMoves.Add((i, j));
+
+            }
+            _board.SetPieceAt(piece.CurrentRow, piece.CurrentCol, piece);
+            return sievedMoves;
+        }
+
+        /*public bool InCheck(Board board, string color) {
             (int i, int j) kingPos = board.KingPosition(color);
 
             Rook procRook = new Rook(color, kingPos.i, kingPos.j);
@@ -113,12 +163,12 @@ namespace CSC260_Final {
 
             Bishop procBishop = new Bishop(color, kingPos.i, kingPos.j);
             foreach ((int i, int j) in procBishop.PossibleMoves(board)) {
-                if (board.PieceAt(i, j).Name == "Queen" || board.PieceAt(i, j).Name == "Rook") {
+                if (board.PieceAt(i, j).Name == "Queen" || board.PieceAt(i, j).Name == "Bishop") {
                     return true;
                 }
             }
 
-            Bishop procKnight = new Bishop(color, kingPos.i, kingPos.j);
+            Knight procKnight = new Knight(color, kingPos.i, kingPos.j);
             foreach ((int i, int j) in procKnight.PossibleMoves(board)) {
                 if (board.PieceAt(i, j).Name == "Knight") { 
                     return true;
@@ -126,10 +176,7 @@ namespace CSC260_Final {
             }
 
             return false;
-        }
+        } */
 
-        public void ThreadRook () {
-
-        }
     }
 }
