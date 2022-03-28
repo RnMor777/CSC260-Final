@@ -16,7 +16,7 @@ namespace CSC260_Final {
             this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WBishop:Properties.Resources.BBishop));
         }
 
-        public override List<(int i, int j)> PossibleMoves (Board board) {
+        protected override List<(int i, int j)> PossibleMoves (Board board) {
             List<(int i, int j)> retList = new List<(int, int)>();
             int[] offsetI = { 1, 1, -1, -1 };
             int[] offsetJ = { 1, -1, 1, -1 };

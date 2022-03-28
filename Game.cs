@@ -10,8 +10,7 @@ namespace CSC260_Final {
 
         private Board _board;
         private string _playerTurn;
-        private int[] _whiteCaptures;
-        private int[] _blackCaptures;
+        private Dictionary<String, Dictionary<String, int>> _captures;
         private StringBuilder _fen;
         private StringBuilder _pgn;
         private int _halfmoves;
@@ -21,8 +20,9 @@ namespace CSC260_Final {
         
         public Game () {
             _board = new Board ();
-            _whiteCaptures = new int[5] { 0, 0, 0, 0, 0 };
-            _blackCaptures = new int[5] { 0, 0, 0, 0, 0 };
+            Dictionary<String, int> whiteCaptures = new Dictionary<String, int> { { "Pawn", 0 }, { "Rook", 0 }, { "Bishop", 0 }, { "Knight", 0}, { "Queen", 0} };
+            Dictionary<String, int> blackCaptures = new Dictionary<String, int> { { "Pawn", 0 }, { "Rook", 0 }, { "Bishop", 0 }, { "Knight", 0}, { "Queen", 0} };
+            _captures = new Dictionary<String, Dictionary<String, int>> { { "White", whiteCaptures}, { "Black", blackCaptures } };
             _fen = new StringBuilder();
             _pgn = new StringBuilder();
             _halfmoves = 0;
@@ -35,29 +35,28 @@ namespace CSC260_Final {
         }
 
         public void Run () {
-            _board.Render();
+            Render();
         }
 
         public void EscapeMove () {
             _activePiece = null;
-            _board.Render();
+            Render();
         }
 
         public void AttemptMove (int row, int col) {
             if (_activePiece != null && _activeMoves.Contains((row, col))) {
-                DoMove(row, col);
+                DoMove(_board.PieceAt(row, col));
                 return;
             }
             else if (_activePiece != null) {
                 _activePiece = null;
             }
 
-            _board.Render();
+            Render();
 
             Pieces clickedPiece = _board.PieceAt(row, col);
             if (clickedPiece != null && clickedPiece.Color == _playerTurn) {
-                List<(int i, int j)> moves = clickedPiece.PossibleMoves(_board);
-                moves = SieveCheck(moves, clickedPiece);
+                List<(int i, int j)> moves = clickedPiece.Moves(_board, _playerTurn, false);
 
                 foreach ((int i, int j) in moves) {
                     GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.LimeGreen;
@@ -72,111 +71,30 @@ namespace CSC260_Final {
             }
         }
 
-        private void DoMove (int row, int col) {
-            _board.SetPieceAt(_activePiece.CurrentRow, _activePiece.CurrentCol, null);
-            _activePiece.CurrentRow = row;
-            _activePiece.CurrentCol = col;
-            _board.SetPieceAt(row, col, _activePiece);
+        private void DoMove (Pieces destination) {
+            Dictionary<String, bool> flags = _board.MovePiece(_activePiece, destination);
+
+            if (flags["Captured"])
+                _captures[_playerTurn][destination.Name] += 1;
+
             _playerTurn = _playerTurn == "White" ? "Black" : "White";
             _activePiece = null;
 
-            /*if (InCheck (_board, "White"))
-               GameScreenForm.UpdateCheckLabel("White in check");
-            else if (InCheck (_board, "Black"))
-               GameScreenForm.UpdateCheckLabel("Black in check");
+            if (flags["In Check"]) 
+                GameScreenForm.UpdateCheckLabel(String.Format("{0} in check", _playerTurn));
             else 
-                GameScreenForm.UpdateCheckLabel(""); */
+                GameScreenForm.UpdateCheckLabel("");
 
-            _board.Render();
+            Render();
         }
 
-        public List<(int i, int j)> SieveCheck(List<(int i, int j)> moves, Pieces piece) {
-            int[] xmoves = { 1, 1,  1, 0, -1,  0, -1, -1 };
-            int[] ymoves = { 1, 0, -1, 1,  1, -1, -1,  0 };
-            bool[] noCheck = new bool[8];
-            (int i, int j) kingPos = _board.KingPosition(_playerTurn);
-            List<(int i, int j)> sievedMoves = new List<(int i, int j)>();
-            String oppPlayer = _playerTurn == "White" ? "Black" : "White";
-            Pieces tmp;
-            bool sieve;
-            int x, y;
-
-
-            _board.SetPieceAt(piece.CurrentRow, piece.CurrentCol, null);
-            foreach ((int i, int j) in moves) {
-                tmp = _board.PieceAt(i, j);
-                if (tmp.Color == "null") tmp = null;
-                _board.SetPieceAt(i, j, piece);
-                sieve = false;
-                for (int k = 0; k < 8; k++) {
-                    if (noCheck[k])
-                        continue;
-
-                    x = kingPos.i;
-                    y = kingPos.j;
-                    do {
-                        x += xmoves[k];
-                        y += ymoves[k];
-                    } while (x >= 0 && x < 8 && y >= 0 && y < 8 && _board.PieceAt(x, y).Color == "null");
-
-                    if (x < 0 || x > 7 || y < 0 || y > 7) 
-                        continue;
-
-                    Pieces foundPiece = _board.PieceAt(x, y);
-                    if (k % 2 == 0) {
-                        if (foundPiece.Color == oppPlayer && (foundPiece.Name == "Queen" || foundPiece.Name == "Bishop")) {
-                            sieve = true;
-                        }
-                        else if (!foundPiece.Equals(piece)) {
-                            noCheck[k] = true;
-                        }
-                    }
-                    else {
-                        if (foundPiece.Color == oppPlayer && (foundPiece.Name == "Queen" || foundPiece.Name == "Rook")) {
-                            sieve = true;
-                        }
-                        else if (!foundPiece.Equals(piece)) {
-                            noCheck[k] = true;
-                        }
-
-                    }
+        public void Render () {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    GameScreenForm.BtnArr[i, j].Image = _board.PieceAt(i, j).Color != "null" ? _board.PieceAt(i, j).Image : null;
+                    GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? System.Drawing.Color.FromArgb(237, 209, 167) : System.Drawing.Color.FromArgb(191, 135, 73);
                 }
-                _board.SetPieceAt(i, j, tmp);
-
-                if (!sieve)
-                    sievedMoves.Add((i, j));
-
             }
-            _board.SetPieceAt(piece.CurrentRow, piece.CurrentCol, piece);
-            return sievedMoves;
         }
-
-        /*public bool InCheck(Board board, string color) {
-            (int i, int j) kingPos = board.KingPosition(color);
-
-            Rook procRook = new Rook(color, kingPos.i, kingPos.j);
-            foreach ((int i, int j) in procRook.PossibleMoves(board)) {
-                if (board.PieceAt(i, j).Name == "Queen" || board.PieceAt(i, j).Name == "Rook") {
-                    return true;
-                }
-            }
-
-            Bishop procBishop = new Bishop(color, kingPos.i, kingPos.j);
-            foreach ((int i, int j) in procBishop.PossibleMoves(board)) {
-                if (board.PieceAt(i, j).Name == "Queen" || board.PieceAt(i, j).Name == "Bishop") {
-                    return true;
-                }
-            }
-
-            Knight procKnight = new Knight(color, kingPos.i, kingPos.j);
-            foreach ((int i, int j) in procKnight.PossibleMoves(board)) {
-                if (board.PieceAt(i, j).Name == "Knight") { 
-                    return true;
-                }
-            }
-
-            return false;
-        } */
-
     }
 }

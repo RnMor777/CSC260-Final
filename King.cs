@@ -16,7 +16,7 @@ namespace CSC260_Final {
             this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WKing:Properties.Resources.BKing));
         }
 
-        public override List<(int i, int j)> PossibleMoves (Board board) {
+        protected override List<(int i, int j)> PossibleMoves (Board board) {
             List<(int i, int j)> retList = new List<(int, int)>();
 
             for (int i = -1; i < 2; i++) {

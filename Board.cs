@@ -9,6 +9,7 @@ namespace CSC260_Final {
     internal class Board {
 
         private Pieces[,] _pieces;
+        private Dictionary<string, bool> _inCheck;
 
         public Board () {
             _pieces = new Pieces[8,8];
@@ -32,6 +33,7 @@ namespace CSC260_Final {
                 _pieces[1, i] = new Pawn("Black", 1, i);
                 _pieces[6, i] = new Pawn("White", 6, i);
             }
+            _inCheck = new Dictionary<string, bool> { { "White", false}, { "Black", false} };
         }
 
         public Board (Board board) {
@@ -39,10 +41,7 @@ namespace CSC260_Final {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     Pieces tmp = board.PieceAt(i, j);
-                    if (tmp.Color != "null") 
-                        _pieces[i, j] = board.PieceAt(i, j);
-                    else
-                        _pieces[i, j] = null;
+                    _pieces[i, j] = tmp.Color == "null" ? null : tmp;
                 }
             }
         }
@@ -51,32 +50,20 @@ namespace CSC260_Final {
 
         }
 
-        public void Render () {
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (_pieces[i,j] != null) {
-                        GameScreenForm.BtnArr[i, j].Image = _pieces[i, j].Image; 
-                    }
-                    else {
-                        GameScreenForm.BtnArr[i, j].Image = null;
-                    }
-
-                    if ((i+j)%2 == 0) {
-                        GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.FromArgb(237, 209, 167);
-                    }
-                    else {
-                        GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.FromArgb(191, 135, 73);
-                    }
-                }
-            }
+        public bool InCheck (string color) {
+            return _inCheck[color];
         }
 
         public Pieces PieceAt (int row, int col) {
-            return _pieces[row, col] ?? new Pawn("null", -1, -1);
+            return _pieces[row, col] ?? new Pawn("null", row, col);
         }
 
         public void SetPieceAt (int row, int col, Pieces piece) {
             _pieces[row, col] = piece;
+            if (piece != null) {
+                piece.CurrentRow = row;
+                piece.CurrentCol = col;
+            }
         }
 
         public (int i, int j) KingPosition (string color) {
@@ -88,6 +75,37 @@ namespace CSC260_Final {
                 }
             }
             return (-1, -1);
+        }
+
+        private void CalcCheck(string color) {
+            (int i, int j) kingPos = KingPosition(color);
+            string opColor = color == "White" ? "Black" : "White";
+
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (PieceAt(i,j).Color == opColor && PieceAt(i, j).Moves(this, color, true).Contains(kingPos)) {
+                        _inCheck[color] = true;
+                        return;
+                    }
+                }
+            }
+            _inCheck[color] = false;
+        }
+
+        public Dictionary<string, bool> MovePiece (Pieces start, Pieces destination) {
+            Dictionary<string, bool> flags = new Dictionary<string, bool>();
+            string opColor = start.Color == "White" ? "Black" : "White";
+            int x = start.CurrentRow;
+            int y = start.CurrentCol;
+            SetPieceAt(destination.CurrentRow, destination.CurrentCol, start);
+            SetPieceAt(x, y, null);
+            CalcCheck(opColor);
+
+            flags["In Check"] = InCheck(opColor);
+            flags["Checkmate"] = false; //to implement
+            flags["Captured"] = destination.Color != null;
+
+            return flags;
         }
     }
 }

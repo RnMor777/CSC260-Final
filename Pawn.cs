@@ -16,7 +16,7 @@ namespace CSC260_Final {
             this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WPawn:Properties.Resources.BPawn));
         }
 
-        public override List<(int i, int j)> PossibleMoves (Board board) {
+        protected override List<(int i, int j)> PossibleMoves (Board board) {
             List<(int i, int j)> retList = new List<(int, int)>();
             int baseRow = Color == "White" ? 6 : 1;
             int direction = Color == "White" ? -1 : 1;
