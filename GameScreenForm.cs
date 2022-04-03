@@ -13,10 +13,20 @@ namespace CSC260_Final {
 
         private static Button[,] _btnArr;
         private static Label _labelCheck;
+        private static Label _whiteCaps;
+        private static Label _blackCaps;
         private Game _game;
 
         public static Button[,] BtnArr {
             get { return _btnArr; }
+        }
+
+        public static Label WhiteCaps {
+            get { return _whiteCaps; }
+        }
+
+        public static Label BlackCaps {
+            get { return _blackCaps; }
         }
 
         public GameScreenForm() {
@@ -24,6 +34,18 @@ namespace CSC260_Final {
         }
 
         private void GameScreenForm_Load(object sender, EventArgs e) {
+            //System.Drawing.Text.PrivateFontCollection pfc = new System.Drawing.Text.PrivateFontCollection();
+            //int fontLength = Properties.Resources.FreeSerif.Length;
+            //byte[] fontdata = Properties.Resources.FreeSerif;
+            //System.IntPtr data = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontLength);
+            //System.Runtime.InteropServices.Marshal.Copy(fontdata, 0, data, fontLength);
+            //pfc.AddMemoryFont(data, fontLength);
+            //blackCap.Font = new Font(pfc.Families[0], blackCap.Font.Size);
+            //whiteCap.Font = new Font(pfc.Families[0], whiteCap.Font.Size);
+            _blackCaps = blackCap;
+            _whiteCaps = whiteCap;
+            //tmpbox.Text = "♜♞♝♛♚♟";
+
             _game = new Game();
 
             this.TransparencyKey = Color.Empty;

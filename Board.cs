@@ -11,6 +11,10 @@ namespace CSC260_Final {
         private Pieces[,] _pieces;
         private Dictionary<string, bool> _inCheck;
 
+        public Pieces[,] AllPieces { 
+            get { return _pieces; } 
+        }
+
         public Board () {
             _pieces = new Pieces[8,8];
             _pieces[0, 0] = new Rook("Black", 0, 0);
@@ -103,7 +107,7 @@ namespace CSC260_Final {
 
             flags["In Check"] = InCheck(opColor);
             flags["Checkmate"] = false; //to implement
-            flags["Captured"] = destination.Color != null;
+            flags["Captured"] = destination.Color != "null";
 
             return flags;
         }

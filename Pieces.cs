@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CSC260_Final {
     internal abstract class Pieces {
@@ -55,14 +51,15 @@ namespace CSC260_Final {
 
         public List<(int i, int j)> Moves(Board board, string turn, bool all) {
             List<(int i, int j)> allMoves = PossibleMoves(board);
-            if (all)
-                return allMoves;
+            if (all) return allMoves;
 
-            int[] xmoves = { 1, 1,  1, 0, -1,  0, -1, -1, 1, 2,  2,  1, -1, -2, -2, -1 };
-            int[] ymoves = { 1, 0, -1, 1,  1, -1, -1,  0, 2, 1, -1, -2,  2,  1, -1, -2 };
+            int[] xmoves = { 1, 1,  1, 0, -1,  0, -1, -1, 1, 2,  2,  1, -1, -2, -2, -1,  1, 1 };
+            int[] ymoves = { 1, 0, -1, 1,  1, -1, -1,  0, 2, 1, -1, -2,  2,  1, -1, -2, -1, 1 };
             bool[] noCheck = new bool[xmoves.Length];
             List<(int i, int j)> sievedMoves = new List<(int i, int j)>();
-            string oppPlayer = turn == "White" ? "Black" : "White";
+            string oppPlayer = turn.Equals("White") ? "Black" : "White";
+            xmoves[16] = turn.Equals("White") ? -1 : 1;
+            xmoves[17] = turn.Equals("White") ? -1 : 1;
             int origX = this.CurrentRow;
             int origY = this.CurrentCol;
             int countNone = 0;
@@ -72,13 +69,13 @@ namespace CSC260_Final {
 
             board.SetPieceAt(this.CurrentRow, this.CurrentCol, null);
             foreach ((int i, int j) in allMoves) {
-                if (countNone == 16) {
+                if (countNone == xmoves.Length) {
                     board.SetPieceAt(origX, origY, this);
                     return allMoves;
                 }
 
                 tmp = board.PieceAt(i, j);
-                if (tmp.Color == "null") 
+                if (tmp.Color.Equals("null")) 
                     tmp = null;
 
                 sieve = false;
@@ -94,23 +91,26 @@ namespace CSC260_Final {
                         x += xmoves[k];
                         y += ymoves[k];
                     }
-                    while (x >= 0 && x < 8 && y >= 0 && y < 8 && board.PieceAt(x, y).Color == "null" && k<8);
+                    while (x >= 0 && x < 8 && y >= 0 && y < 8 && board.PieceAt(x, y).Color.Equals("null") && k < 8);
                     if (x < 0 || x > 7 || y < 0 || y > 7) {
-                        noCheck[k] = true;
-                        countNone += 1;
+                        if (!this.Name.Equals("King")) {
+                            noCheck[k] = true;
+                            countNone += 1;
+                        }
                         continue;
                     }
 
                     Pieces foundPiece = board.PieceAt(x, y);
 
                     List<String> names;
-                    if (k >= 8) names = new List<String> { "Knight" };
-                    else if (k % 2 == 0) names = new List<String> { "Queen", "Bishop" };
-                    else names = new List<String> { "Queen", "Rook" };
+                    if (k >= 16) names = new List<string> { "Pawn" };
+                    else if (k >= 8) names = new List<string> { "Knight" };
+                    else if (k % 2 == 0) names = new List<string> { "Queen", "Bishop" };
+                    else names = new List<string> { "Queen", "Rook" };
 
                     if (foundPiece.Color == oppPlayer && names.Contains(foundPiece.Name))
                         sieve = true;
-                    else if (!foundPiece.Equals(this) && this.Name != "King") {
+                    else if (!foundPiece.Equals(this) && !this.Name.Equals("King")) {
                         noCheck[k] = true;
                         countNone += 1;
                     }

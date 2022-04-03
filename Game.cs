@@ -11,27 +11,22 @@ namespace CSC260_Final {
         private Board _board;
         private string _playerTurn;
         private Dictionary<String, Dictionary<String, int>> _captures;
-        private StringBuilder _fen;
-        private StringBuilder _pgn;
+        private Dictionary<String, String> _symbols;
         private int _halfmoves;
         private Pieces _activePiece;
         private List<(int i, int j)> _activeMoves;
         private List<List<(int i, int j)>> checks;
+        private Stack<Moves> _previousMoves;
         
         public Game () {
             _board = new Board ();
             Dictionary<String, int> whiteCaptures = new Dictionary<String, int> { { "Pawn", 0 }, { "Rook", 0 }, { "Bishop", 0 }, { "Knight", 0}, { "Queen", 0} };
             Dictionary<String, int> blackCaptures = new Dictionary<String, int> { { "Pawn", 0 }, { "Rook", 0 }, { "Bishop", 0 }, { "Knight", 0}, { "Queen", 0} };
             _captures = new Dictionary<String, Dictionary<String, int>> { { "White", whiteCaptures}, { "Black", blackCaptures } };
-            _fen = new StringBuilder();
-            _pgn = new StringBuilder();
+            _symbols = new Dictionary<String, String> { { "Pawn", "♟" }, { "Knight", "♞" }, { "Queen", "♛" }, { "Bishop", "♝" }, { "Rook", "♜" } };
             _halfmoves = 0;
+            _previousMoves = new Stack<Moves> ();
             _playerTurn = "White";
-        }
-
-        public Game (StringBuilder pgn, StringBuilder fen) : this() {
-            _fen = fen;
-            _pgn = pgn;
         }
 
         public void Run () {
@@ -72,6 +67,8 @@ namespace CSC260_Final {
         }
 
         private void DoMove (Pieces destination) {
+            _previousMoves.Push(new Moves(_board.AllPieces, _activePiece, destination));
+
             Dictionary<String, bool> flags = _board.MovePiece(_activePiece, destination);
 
             if (flags["Captured"])
@@ -80,9 +77,11 @@ namespace CSC260_Final {
             _playerTurn = _playerTurn == "White" ? "Black" : "White";
             _activePiece = null;
 
-            if (flags["In Check"]) 
+            if (flags["In Check"]) {
+                _previousMoves.Peek().WasCheck();
                 GameScreenForm.UpdateCheckLabel(String.Format("{0} in check", _playerTurn));
-            else 
+            }
+            else
                 GameScreenForm.UpdateCheckLabel("");
 
             Render();
@@ -95,6 +94,23 @@ namespace CSC260_Final {
                     GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? System.Drawing.Color.FromArgb(237, 209, 167) : System.Drawing.Color.FromArgb(191, 135, 73);
                 }
             }
+            Dictionary<String, int> x = _captures["White"];
+            StringBuilder labText = new StringBuilder();
+            foreach (String y in x.Keys) {
+                for (int i = 0; i < x[y]; i++) {
+                    labText.Append(_symbols[y]);
+                }
+            }
+            GameScreenForm.WhiteCaps.Text = labText.ToString();
+
+            x = _captures["Black"];
+            labText = new StringBuilder();
+            foreach (String y in x.Keys) {
+                for (int i = 0; i < x[y]; i++) {
+                    labText.Append(_symbols[y]);
+                }
+            }
+            GameScreenForm.BlackCaps.Text = labText.ToString();
         }
     }
 }
