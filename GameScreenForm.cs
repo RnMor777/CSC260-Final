@@ -15,6 +15,7 @@ namespace CSC260_Final {
         private static Label _labelCheck;
         private static Label _whiteCaps;
         private static Label _blackCaps;
+        private static TableLayoutPanel _moveTable;
         private Game _game;
 
         public static Button[,] BtnArr {
@@ -27,6 +28,10 @@ namespace CSC260_Final {
 
         public static Label BlackCaps {
             get { return _blackCaps; }
+        }
+
+        public static TableLayoutPanel MovementTable {
+            get { return _moveTable; }
         }
 
         public GameScreenForm() {
@@ -44,6 +49,12 @@ namespace CSC260_Final {
             //whiteCap.Font = new Font(pfc.Families[0], whiteCap.Font.Size);
             _blackCaps = blackCap;
             _whiteCaps = whiteCap;
+            _moveTable = MoveTable;
+            _moveTable.AutoScroll = false;
+            _moveTable.HorizontalScroll.Enabled = false;
+            _moveTable.HorizontalScroll.Visible = false;
+            _moveTable.AutoScroll = true;
+
             //tmpbox.Text = "♜♞♝♛♚♟";
 
             _game = new Game();

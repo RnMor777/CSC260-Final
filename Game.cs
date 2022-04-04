@@ -17,6 +17,7 @@ namespace CSC260_Final {
         private List<(int i, int j)> _activeMoves;
         private List<List<(int i, int j)>> checks;
         private Stack<Moves> _previousMoves;
+        private int _movesMade;
         
         public Game () {
             _board = new Board ();
@@ -27,6 +28,7 @@ namespace CSC260_Final {
             _halfmoves = 0;
             _previousMoves = new Stack<Moves> ();
             _playerTurn = "White";
+            _movesMade = 0;
         }
 
         public void Run () {
@@ -84,7 +86,9 @@ namespace CSC260_Final {
             else
                 GameScreenForm.UpdateCheckLabel("");
 
+            UpdateMoves(_previousMoves.Peek());
             Render();
+            _movesMade += 1;
         }
 
         public void Render () {
@@ -111,6 +115,25 @@ namespace CSC260_Final {
                 }
             }
             GameScreenForm.BlackCaps.Text = labText.ToString();
+        }
+
+        public void UpdateMoves (Moves move) {
+            if (_movesMade % 2 == 0) {
+                Label turn = new Label();
+                turn.Height = 25;
+                turn.Text = (_movesMade/2+1).ToString();
+                GameScreenForm.MovementTable.Controls.Add(turn, 0, _movesMade/2);
+                GameScreenForm.MovementTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
+            }
+            
+            Label addMove = new Label();
+            addMove.Height = 25;
+            addMove.Text = move.PGN;
+            GameScreenForm.MovementTable.Controls.Add(addMove, _movesMade % 2 + 1, _movesMade / 2);
+            GameScreenForm.MovementTable.HorizontalScroll.Visible = false;
+
+            //label.Dock = DockStyle.Fill;
+            //label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
         }
     }
 }
