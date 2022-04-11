@@ -16,7 +16,10 @@ namespace CSC260_Final {
         private static Label _whiteCaps;
         private static Label _blackCaps;
         private static TableLayoutPanel _moveTable;
+        private Label[] _letterArr;
+        private Label[] _numbArr;
         private Game _game;
+        private static bool _flipBoard;
 
         public static Button[,] BtnArr {
             get { return _btnArr; }
@@ -34,9 +37,14 @@ namespace CSC260_Final {
             get { return _moveTable; }
         }
 
+        public static bool Flip {
+            get { return _flipBoard; }
+        }
+
         public GameScreenForm() {
             InitializeComponent();
         }
+
 
         private void GameScreenForm_Load(object sender, EventArgs e) {
             //System.Drawing.Text.PrivateFontCollection pfc = new System.Drawing.Text.PrivateFontCollection();
@@ -54,6 +62,7 @@ namespace CSC260_Final {
             _moveTable.HorizontalScroll.Enabled = false;
             _moveTable.HorizontalScroll.Visible = false;
             _moveTable.AutoScroll = true;
+            _flipBoard = false;
 
             //tmpbox.Text = "♜♞♝♛♚♟";
 
@@ -77,6 +86,9 @@ namespace CSC260_Final {
                 }
             }
 
+            _letterArr = new Label[] { labelA, labelB, labelC, labelD, labelE, labelF, labelG, labelH };
+            _numbArr = new Label[] { label1, label2, label3, label4, label5, label6, label7, label8 };
+
             _game.Run();
         }
 
@@ -86,7 +98,10 @@ namespace CSC260_Final {
                     _game.EscapeMove();
                 }
                 else if (args.Button == MouseButtons.Left) {
-                    _game.AttemptMove(i, j);
+                    if (!_flipBoard)
+                        _game.AttemptMove(i, j);
+                    else
+                        _game.AttemptMove(7 - i, 7 - j);
                 }
             };
         }
@@ -97,6 +112,16 @@ namespace CSC260_Final {
 
         private void undoBtn_Click(object sender, EventArgs e) {
             _game.UndoMove();
+        }
+
+        private void flipBtn_Click(object sender, EventArgs e) {
+            _flipBoard = !_flipBoard;
+            _game.Render();
+
+            for (int i = 0; i < 8; i++) {
+                _letterArr[i].Text = "" + (char)(65 + (_flipBoard ? (7 - i) : i));
+                _numbArr[i].Text = "" + (char)(49 + (_flipBoard ? (7 - i) : i));
+            }
         }
     }
 }
