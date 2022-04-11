@@ -69,33 +69,45 @@ namespace CSC260_Final {
         }
 
         private void DoMove (Pieces destination) {
-            _previousMoves.Push(new Moves(_board.AllPieces, _activePiece, destination));
+            int currCol = _activePiece.CurrentCol;
+
+            _previousMoves.Push(new Moves(_board.AllPieces, _activePiece, destination, _board.EnPassant));
+
+            if (_activePiece.Name == "Rook") {
+                King king = (King)_board.PieceAt(_board.KingPosition(_activePiece.Color));
+                _previousMoves.Peek().Castling = (king.CastleLeft, king.CastleRight);
+            }
 
             Dictionary<String, bool> flags = _board.MovePiece(_activePiece, destination);
 
             if (flags["Captured"])
                 _captures[_playerTurn][destination.Name] += 1;
 
+            if (flags["Castle"])
+                _previousMoves.Peek().WasCastle(_activePiece.CurrentCol < currCol);
+
+            if (flags["EnPassant"]) 
+                _previousMoves.Peek().WasPassant(currCol);
+
+
             _playerTurn = _playerTurn == "White" ? "Black" : "White";
             _activePiece = null;
+            UpdateMoves(_previousMoves.Peek());
+            _movesMade += 1;
 
+            GameScreenForm.UpdateCheckLabel("");
             if (flags["In Check"]) {
                 _previousMoves.Peek().WasCheck();
                 GameScreenForm.UpdateCheckLabel(String.Format("{0} in check", _playerTurn));
             }
-            else
-                GameScreenForm.UpdateCheckLabel("");
-
-            UpdateMoves(_previousMoves.Peek());
             Render();
-            _movesMade += 1;
         }
 
         public void Render () {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     GameScreenForm.BtnArr[i, j].Image = _board.PieceAt(i, j).Color != "null" ? _board.PieceAt(i, j).Image : null;
-                    GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? System.Drawing.Color.FromArgb(237, 209, 167) : System.Drawing.Color.FromArgb(191, 135, 73);
+                    GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? System.Drawing.Color.FromArgb(240, 217, 181) : System.Drawing.Color.FromArgb(181, 136, 99);
                 }
             }
             Dictionary<String, int> x = _captures["White"];
@@ -131,9 +143,49 @@ namespace CSC260_Final {
             addMove.Text = move.PGN;
             GameScreenForm.MovementTable.Controls.Add(addMove, _movesMade % 2 + 1, _movesMade / 2);
             GameScreenForm.MovementTable.HorizontalScroll.Visible = false;
+        }
 
-            //label.Dock = DockStyle.Fill;
-            //label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        public void UndoMove () {
+            if (_previousMoves.Count > 0) {
+                Moves last = _previousMoves.Pop();
+                Pieces start = last.Start;
+                Pieces end = last.End;
+
+                _board.SetPieceAt(start);
+                _board.SetPieceAt(end);
+                _playerTurn = _playerTurn == "White" ? "Black" : "White";
+                _board.EnPassant = last.EnPassantSquare;
+
+                if (end.Color != "Null") {
+                    _captures[_playerTurn][end.Name] -= 1;
+                }
+
+                if (last.Flags["EnPassant"]) {
+                    Pieces extra = last.Extra;
+                    _board.SetPieceAt(extra);
+                    _captures[_playerTurn][extra.Name] -= 1;
+                }
+
+                if (last.Flags["Castle"]) {
+                    Pieces extra = last.Extra;
+                    _board.SetPieceAt(extra);
+                    _board.SetPieceAt(extra.CurrentRow, extra.CurrentCol == 0 ? 3 : 5, null);
+                }
+
+                if (start.Name == "Rook") {
+                    King king = (King)_board.PieceAt(_board.KingPosition(start.Color));
+                    king.CastleLeft = last.Castling.l;
+                    king.CastleRight = last.Castling.r;
+                }
+
+                int count = GameScreenForm.MovementTable.Controls.Count - 1;
+                GameScreenForm.MovementTable.Controls.RemoveAt(count);
+                _movesMade--;
+                if (_movesMade % 2 == 0) 
+                    GameScreenForm.MovementTable.Controls.RemoveAt(count - 1);
+
+                Render();
+            }
         }
     }
 }

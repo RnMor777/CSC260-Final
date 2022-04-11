@@ -16,6 +16,10 @@ namespace CSC260_Final {
             this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WKnight:Properties.Resources.BKnight));
         }
 
+        public override Pieces Copy() {
+            return new Knight(this.Color, this.CurrentRow, this.CurrentCol);
+        }
+
         protected override List<(int i, int j)> PossibleMoves (Board board) {
             List<(int i, int j)> retList = new List<(int, int)> ();
             int[] offsetI = { -2, -2, -1, -1, 1, 1, 2, 2 };

@@ -94,5 +94,9 @@ namespace CSC260_Final {
         public static void UpdateCheckLabel (string newText) {
             _labelCheck.Text = newText;
         }
+
+        private void undoBtn_Click(object sender, EventArgs e) {
+            _game.UndoMove();
+        }
     }
 }

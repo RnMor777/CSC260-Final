@@ -6,22 +6,49 @@ using System.Threading.Tasks;
 
 namespace CSC260_Final {
     internal class Moves {
-        private Pieces[,] _pieces;
+        private Pieces _start;
+        private Pieces _end;
+        private Pieces _extra;
+        private (int i, int j) _enpassantSquare;
+        private (bool l, bool r) _castling;
         private StringBuilder _pgn;
+        private Dictionary<String, bool> _flags;
 
         public String PGN {
             get { return _pgn.ToString(); }
         }
 
-        public Pieces[,] OldBoard {
-            get { return _pieces; }
+        public Pieces Start {
+            get { return _start; }
         }
 
-        public Moves(Pieces[,] pieces, Pieces orig, Pieces dest) {
-            _pieces = new Pieces[8, 8];
-            Array.Copy(pieces, _pieces, 64);
-            StringBuilder tmpPgn = new StringBuilder();
+        public Pieces End {
+            get { return _end; }
+        }
 
+        public Pieces Extra {
+            get { return _extra; }
+        }
+
+        public Dictionary<String, bool> Flags {
+            get { return _flags; }
+        }
+
+        public (int i, int j) EnPassantSquare {
+            get { return _enpassantSquare; }
+        }
+
+        public (bool l, bool r) Castling {
+            get { return _castling; }
+            set { _castling = value; }
+        }
+
+        public Moves(Pieces[,] pieces, Pieces orig, Pieces dest, (int i, int j) enp) {
+            _flags = new Dictionary<string, bool>() { { "EnPassant", false}, { "Castle", false } };
+            StringBuilder tmpPgn = new StringBuilder();
+            _start = orig.Copy();
+            _end = dest.Copy();
+            _enpassantSquare = enp;
             switch (orig.Name) {
                 case "Knight":
                     tmpPgn.Append("N");
@@ -34,16 +61,16 @@ namespace CSC260_Final {
             }
 
             //check for special cases
+            //To-Do
 
             if (dest.Color != "null" && dest.Color != orig.Color) {
-                if (orig.Name.Equals("Pawn")) {
-                    tmpPgn.Append((char)(97 + orig.CurrentCol));
-                }
+                if (orig.Name.Equals("Pawn")) 
+                    tmpPgn.Append((char)(orig.CurrentCol + 97));
                 tmpPgn.Append("x");
             }
 
             tmpPgn.Append((char)(dest.CurrentCol + 97));
-            tmpPgn.Append((char)(dest.CurrentRow + 48));
+            tmpPgn.Append((char)(8 - dest.CurrentRow + 48));
 
             _pgn = tmpPgn;
         }
@@ -56,5 +83,28 @@ namespace CSC260_Final {
             _pgn = _pgn.Append("#");
         }
 
+        public void WasPassant (int col) {
+            _flags["EnPassant"] = true;
+            _extra = new Pawn(_start.Color == "White" ? "Black" : "White", _start.CurrentRow, _end.CurrentCol);
+            StringBuilder tmp = new StringBuilder();
+            tmp.Append((char)(col + 97));
+            tmp.Append('x');
+            tmp.Append(_pgn);
+            _pgn = tmp;
+        }
+
+        public void WasCastle (bool wasLeft) {
+            _flags["Castle"] = true;
+            if (wasLeft) {
+                _extra = new Rook(_start.Color, _start.CurrentRow, 0);
+                _pgn.Clear();
+                _pgn.Append("O-O-O");
+            }
+            else {
+                _extra = new Rook(_start.Color, _start.CurrentRow, 7);
+                _pgn.Clear();
+                _pgn.Append("O-O");
+            }
+        }
     }
 }

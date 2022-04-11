@@ -31,14 +31,19 @@ namespace CSC260_Final {
             get { return _currentCol; }
             set { _currentCol = value; }
         }
+        public (int row, int col) Position {
+            get { return (_currentRow, _currentCol); }
+        }
         public System.Drawing.Image Image {
             get { return _image; }
             set { _image = value; }
         }
 
         public bool Equals (Pieces other) {
-            return _currentRow == other.CurrentRow && _currentCol == other.CurrentCol;
+            return _currentRow == other.CurrentRow && _currentCol == other.CurrentCol && _color == other.Color;
         }
+
+        public abstract Pieces Copy ();
 
         protected abstract List<(int i, int j)> PossibleMoves(Board board);
 
@@ -119,6 +124,14 @@ namespace CSC260_Final {
                 if (!sieve) sievedMoves.Add((i, j));
             }
             board.SetPieceAt(origX, origY, this);
+            if (this.Name == "King") {
+                if (sievedMoves.Contains((CurrentRow,CurrentCol-2)) && !sievedMoves.Contains((CurrentRow,CurrentCol-1))) {
+                    sievedMoves.Remove((CurrentRow, CurrentCol - 2));
+                }
+                if (sievedMoves.Contains((CurrentRow,CurrentCol+2)) && !sievedMoves.Contains((CurrentRow,CurrentCol+1))) {
+                    sievedMoves.Remove((CurrentRow, CurrentCol + 2));
+                }
+            }
             return sievedMoves;
         }
     }

@@ -16,6 +16,10 @@ namespace CSC260_Final {
             this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WRook:Properties.Resources.BRook));
         }
 
+        public override Pieces Copy() {
+            return new Rook(this.Color, this.CurrentRow, this.CurrentCol);
+        }
+
         protected override List<(int i, int j)> PossibleMoves (Board board) {
             List<(int i, int j)> retList = new List<(int, int)>();
             int[] offsetI = { 1, -1, 0, 0 };

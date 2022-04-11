@@ -117,7 +117,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.undoBtn = new System.Windows.Forms.Button();
             this.MoveTable = new System.Windows.Forms.TableLayoutPanel();
             this.BackgroundBorder.SuspendLayout();
             this.SuspendLayout();
@@ -540,7 +540,7 @@
             // 
             // BackgroundBorder
             // 
-            this.BackgroundBorder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(83)))), ((int)(((byte)(49)))));
+            this.BackgroundBorder.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.BackgroundBorder.Controls.Add(this.labelH);
             this.BackgroundBorder.Controls.Add(this.labelG);
             this.BackgroundBorder.Controls.Add(this.labelF);
@@ -1297,14 +1297,15 @@
             this.button7.Text = "draw";
             this.button7.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // undoBtn
             // 
-            this.button8.Location = new System.Drawing.Point(716, 371);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(54, 42);
-            this.button8.TabIndex = 84;
-            this.button8.Text = "undo";
-            this.button8.UseVisualStyleBackColor = true;
+            this.undoBtn.Location = new System.Drawing.Point(716, 371);
+            this.undoBtn.Name = "undoBtn";
+            this.undoBtn.Size = new System.Drawing.Size(54, 42);
+            this.undoBtn.TabIndex = 84;
+            this.undoBtn.Text = "undo";
+            this.undoBtn.UseVisualStyleBackColor = true;
+            this.undoBtn.Click += new System.EventHandler(this.undoBtn_Click);
             // 
             // MoveTable
             // 
@@ -1325,7 +1326,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1075, 584);
             this.Controls.Add(this.MoveTable);
-            this.Controls.Add(this.button8);
+            this.Controls.Add(this.undoBtn);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
@@ -1508,7 +1509,7 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button undoBtn;
         private System.Windows.Forms.TableLayoutPanel MoveTable;
     }
 }
