@@ -12,6 +12,7 @@ namespace CSC260_Final {
         private (int i, int j) _enpassantSquare;
         private (bool l, bool r) _castling;
         private StringBuilder _pgn;
+        private string _fen;
         private Dictionary<String, bool> _flags;
 
         public String PGN {
@@ -41,6 +42,11 @@ namespace CSC260_Final {
         public (bool l, bool r) Castling {
             get { return _castling; }
             set { _castling = value; }
+        }
+
+        public string FEN {
+            get { return _fen; }
+            set { _fen = value; }
         }
 
         public Moves(Pieces[,] pieces, Pieces orig, Pieces dest, (int i, int j) enp) {

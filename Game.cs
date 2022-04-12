@@ -15,9 +15,11 @@ namespace CSC260_Final {
         private int _halfmoves;
         private Pieces _activePiece;
         private List<(int i, int j)> _activeMoves;
-        private List<List<(int i, int j)>> checks;
+        //private List<List<(int i, int j)>> checks;
         private Stack<Moves> _previousMoves;
         private int _movesMade;
+        private bool _block;
+        private int? _locationPrevView;
 
         public Game () {
             _board = new Board ();
@@ -29,6 +31,8 @@ namespace CSC260_Final {
             _previousMoves = new Stack<Moves> ();
             _playerTurn = "White";
             _movesMade = 0;
+            _block = false;
+            _locationPrevView = null;
         }
 
         public void Run () {
@@ -41,6 +45,8 @@ namespace CSC260_Final {
         }
 
         public void AttemptMove (int row, int col) {
+            if (_block)
+                return;
             if (_activePiece != null && _activeMoves.Contains((row, col))) {
                 DoMove(_board.PieceAt(row, col));
                 return;
@@ -100,6 +106,7 @@ namespace CSC260_Final {
             _playerTurn = _playerTurn == "White" ? "Black" : "White";
             _activePiece = null;
             UpdateMoves(_previousMoves.Peek());
+            _previousMoves.Peek().FEN = CreateFen(_board);
             _movesMade += 1;
 
             GameScreenForm.UpdateCheckLabel("");
@@ -111,14 +118,18 @@ namespace CSC260_Final {
         }
 
         public void Render () {
+            Render(_board);
+        }
+
+        private void Render (Board board) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (!GameScreenForm.Flip) {
-                        GameScreenForm.BtnArr[i, j].Image = _board.PieceAt(i, j).Color != "null" ? _board.PieceAt(i, j).Image : null;
+                        GameScreenForm.BtnArr[i, j].Image = board.PieceAt(i, j).Color != "null" ? board.PieceAt(i, j).Image : null;
                         GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? System.Drawing.Color.FromArgb(240, 217, 181) : System.Drawing.Color.FromArgb(181, 136, 99);
                     }
                     else {
-                        GameScreenForm.BtnArr[i, j].Image = _board.PieceAt(7-i, 7-j).Color != "null" ? _board.PieceAt(7-i, 7-j).Image : null;
+                        GameScreenForm.BtnArr[i, j].Image = board.PieceAt(7-i, 7-j).Color != "null" ? board.PieceAt(7-i, 7-j).Image : null;
                         GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? System.Drawing.Color.FromArgb(240, 217, 181) : System.Drawing.Color.FromArgb(181, 136, 99);
                     }
                 }
@@ -140,9 +151,14 @@ namespace CSC260_Final {
                 }
             }
             GameScreenForm.BlackCaps.Text = labText.ToString();
+
+            //GameScreenForm.UpdateCheckLabel(CreateFen(board));
         }
 
         public void UpdateMoves (Moves move) {
+            if (GameScreenForm.MovementTable.Controls.Count > 0) 
+                GameScreenForm.MovementTable.Controls[GameScreenForm.MovementTable.Controls.Count - 1].BackColor = System.Drawing.Color.Transparent;
+
             if (_movesMade % 2 == 0) {
                 Label turn = new Label();
                 turn.Height = 25;
@@ -152,13 +168,35 @@ namespace CSC260_Final {
             }
             
             Label addMove = new Label();
+            addMove.BackColor = System.Drawing.Color.Violet;
             addMove.Height = 25;
             addMove.Text = move.PGN;
+            AddEventMove(_movesMade, addMove);
             GameScreenForm.MovementTable.Controls.Add(addMove, _movesMade % 2 + 1, _movesMade / 2);
             GameScreenForm.MovementTable.HorizontalScroll.Visible = false;
         }
 
+        public void AddEventMove (int pos, Label label) {
+            label.Click += (s, e) => {
+                foreach (Label x in GameScreenForm.MovementTable.Controls) {
+                    x.BackColor = System.Drawing.Color.Transparent;
+                }
+                if (pos == _movesMade-1) {
+                    _block = false;
+                    label.BackColor = System.Drawing.Color.Violet;
+                }
+                else {
+                    _block = true;
+                    label.BackColor = System.Drawing.Color.Blue;
+                }
+                GameScreenForm.UpdateCheckLabel(_previousMoves.ElementAt(_previousMoves.Count - pos - 1).FEN);
+                Render(new Board(_previousMoves.ElementAt(_previousMoves.Count - pos - 1).FEN));
+            };
+        }
+
         public void UndoMove () {
+            if (_block)
+                return;
             if (_previousMoves.Count > 0) {
                 Moves last = _previousMoves.Pop();
                 Pieces start = last.Start;
@@ -197,8 +235,68 @@ namespace CSC260_Final {
                 if (_movesMade % 2 == 0) 
                     GameScreenForm.MovementTable.Controls.RemoveAt(count - 1);
 
+                if (GameScreenForm.MovementTable.Controls.Count > 0)
+                    GameScreenForm.MovementTable.Controls[GameScreenForm.MovementTable.Controls.Count-1].BackColor = System.Drawing.Color.Violet;
+
                 Render();
             }
+        }
+
+        public void GoBack(bool all) {
+            if (all) {
+
+            }
+            else {
+
+            }
+        }
+
+        public static string CreateFen(Board board) {
+            StringBuilder fen = new StringBuilder();
+            int openSpots = 0;
+
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (board.PieceAt((i,j)).Color == "null") {
+                        openSpots++;
+                        continue;
+                    }
+                    if (openSpots > 0) {
+                        fen.Append((char)(48 + openSpots));
+                        openSpots = 0;
+                    }
+                    int toCapital = board.PieceAt((i,j)).Color == "White" ? 0 : 32;
+                    switch (board.PieceAt((i, j)).Name) {
+                        case "Rook":
+                            fen.Append((char)(82 + toCapital));
+                            break;
+                        case "Knight":
+                            fen.Append((char)(78 + toCapital));
+                            break;
+                        case "Bishop":
+                            fen.Append((char)(66 + toCapital));
+                            break;
+                        case "Queen":
+                            fen.Append((char)(81 + toCapital));
+                            break;
+                        case "King":
+                            fen.Append((char)(75 + toCapital));
+                            break;
+                        case "Pawn":
+                            fen.Append((char)(80 + toCapital));
+                            break;
+                    }
+                }
+                if (openSpots > 0) {
+                    fen.Append((char)(48 + openSpots));
+                    openSpots = 0;
+                }
+                if (i != 7)
+                    fen.Append("/");
+            }
+
+            fen.Append(" ");
+            return fen.ToString();
         }
     }
 }

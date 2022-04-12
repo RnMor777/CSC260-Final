@@ -20,13 +20,16 @@ namespace CSC260_Final {
             set { _castleRight = value; }
         }
 
-        public King (string color, int row, int col, bool cl, bool cr) {
+        public King (string color, int row, int col) {
             this.Name = "King";
             this.PieceWorth = float.MaxValue;
             this.Color = color;
             this.CurrentRow = row;
             this.CurrentCol = col;
             this.Image = ((System.Drawing.Image)(color=="White"?Properties.Resources.WKing:Properties.Resources.BKing));
+        }
+
+        public King (string color, int row, int col, bool cl, bool cr) : this(color, row, col) {
             _castleLeft = cl;
             _castleRight = cr;
         }

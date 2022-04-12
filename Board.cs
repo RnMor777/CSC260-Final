@@ -57,7 +57,65 @@ namespace CSC260_Final {
         }
 
         public Board (string fen) {
+            _pieces = new Pieces[8, 8];
+            int row = 0;
+            int col = 0;
+            int index = 0;
+            while (fen[index] != ' ') {
+                if (fen[index] == '/') {
+                    row++;
+                    col = 0;
+                }
+                else if (fen[index] < (char)58) {
+                    col += (int)(fen[index] - 48);
+                }
+                else {
+                    Pieces created;
+                    char upper = (char)fen[index];
 
+                    switch (upper) {
+                        case 'R':
+                            created = new Rook("White", row, col);
+                            break;
+                        case 'r':
+                            created = new Rook("Black", row, col);
+                            break;
+                        case 'N':
+                            created = new Knight("White", row, col);
+                            break;
+                        case 'n':
+                            created = new Knight("Black", row, col);
+                            break;
+                        case 'K':
+                            created = new King("White", row, col);
+                            break;
+                        case 'k':
+                            created = new King("Black", row, col);
+                            break;
+                        case 'B':
+                            created = new Bishop("White", row, col);
+                            break;
+                        case 'b':
+                            created = new Bishop("Black", row, col);
+                            break;
+                        case 'Q':
+                            created = new Queen("White", row, col);
+                            break;
+                        case 'q':
+                            created = new Queen("Black", row, col);
+                            break;
+                        case 'P':
+                            created = new Pawn("White", row, col);
+                            break;
+                        default:
+                            created = new Pawn("Black", row, col);
+                            break;
+                    }
+                    _pieces[row, col] = created;
+                    col++;
+                }
+                index++;
+            }
         }
 
         public bool InCheck (string color) {

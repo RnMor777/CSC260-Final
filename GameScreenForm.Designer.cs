@@ -745,7 +745,7 @@
             this.labelCheck.ForeColor = System.Drawing.Color.Black;
             this.labelCheck.Location = new System.Drawing.Point(173, 534);
             this.labelCheck.Name = "labelCheck";
-            this.labelCheck.Size = new System.Drawing.Size(212, 32);
+            this.labelCheck.Size = new System.Drawing.Size(693, 32);
             this.labelCheck.TabIndex = 71;
             // 
             // blackCap
