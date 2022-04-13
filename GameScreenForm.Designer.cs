@@ -75,6 +75,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.labelCheck = new System.Windows.Forms.Label();
             this.blackCap = new System.Windows.Forms.Label();
+            this.whiteCap = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
+            this.MoveTable = new System.Windows.Forms.TableLayoutPanel();
+            this.undoBtn = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.ForwardAll = new System.Windows.Forms.Button();
+            this.RewindAll = new System.Windows.Forms.Button();
+            this.Rewind = new System.Windows.Forms.Button();
+            this.Forward = new System.Windows.Forms.Button();
+            this.flipBtn = new System.Windows.Forms.Button();
             this.H1 = new System.Windows.Forms.Button();
             this.G1 = new System.Windows.Forms.Button();
             this.F1 = new System.Windows.Forms.Button();
@@ -107,19 +117,15 @@
             this.B8 = new System.Windows.Forms.Button();
             this.C8 = new System.Windows.Forms.Button();
             this.A8 = new System.Windows.Forms.Button();
-            this.whiteCap = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.flipBtn = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.undoBtn = new System.Windows.Forms.Button();
-            this.MoveTable = new System.Windows.Forms.TableLayoutPanel();
+            this.Player2Name = new System.Windows.Forms.Label();
+            this.Player1Name = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.BackgroundBorder.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // H5
@@ -540,7 +546,7 @@
             // 
             // BackgroundBorder
             // 
-            this.BackgroundBorder.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.BackgroundBorder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
             this.BackgroundBorder.Controls.Add(this.labelH);
             this.BackgroundBorder.Controls.Add(this.labelG);
             this.BackgroundBorder.Controls.Add(this.labelF);
@@ -751,13 +757,126 @@
             // blackCap
             // 
             this.blackCap.AutoSize = true;
-            this.blackCap.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.blackCap.Location = new System.Drawing.Point(701, 30);
+            this.blackCap.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.blackCap.Location = new System.Drawing.Point(656, 41);
             this.blackCap.Name = "blackCap";
-            this.blackCap.Size = new System.Drawing.Size(214, 41);
+            this.blackCap.Size = new System.Drawing.Size(143, 29);
             this.blackCap.TabIndex = 73;
             this.blackCap.Text = "♜♞♝♛♚♟";
             this.blackCap.UseCompatibleTextRendering = true;
+            // 
+            // whiteCap
+            // 
+            this.whiteCap.AutoSize = true;
+            this.whiteCap.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.whiteCap.Location = new System.Drawing.Point(656, 461);
+            this.whiteCap.Name = "whiteCap";
+            this.whiteCap.Size = new System.Drawing.Size(143, 29);
+            this.whiteCap.TabIndex = 74;
+            this.whiteCap.Text = "♜♞♝♛♚♟";
+            this.whiteCap.UseCompatibleTextRendering = true;
+            // 
+            // button7
+            // 
+            this.button7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
+            this.button7.Image = global::CSC260_Final.Properties.Resources.Draw;
+            this.button7.Location = new System.Drawing.Point(137, 7);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(54, 42);
+            this.button7.TabIndex = 83;
+            this.button7.UseVisualStyleBackColor = false;
+            // 
+            // MoveTable
+            // 
+            this.MoveTable.AutoScroll = true;
+            this.MoveTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
+            this.MoveTable.ColumnCount = 3;
+            this.MoveTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.MoveTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
+            this.MoveTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.MoveTable.Location = new System.Drawing.Point(656, 158);
+            this.MoveTable.Name = "MoveTable";
+            this.MoveTable.RowCount = 1;
+            this.MoveTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.MoveTable.Size = new System.Drawing.Size(300, 207);
+            this.MoveTable.TabIndex = 85;
+            // 
+            // undoBtn
+            // 
+            this.undoBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
+            this.undoBtn.Image = global::CSC260_Final.Properties.Resources.Undo;
+            this.undoBtn.Location = new System.Drawing.Point(75, 7);
+            this.undoBtn.Name = "undoBtn";
+            this.undoBtn.Size = new System.Drawing.Size(54, 42);
+            this.undoBtn.TabIndex = 84;
+            this.undoBtn.UseVisualStyleBackColor = false;
+            this.undoBtn.Click += new System.EventHandler(this.undoBtn_Click);
+            // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
+            this.button6.Image = global::CSC260_Final.Properties.Resources.Concede;
+            this.button6.Location = new System.Drawing.Point(199, 7);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(54, 42);
+            this.button6.TabIndex = 82;
+            this.button6.UseVisualStyleBackColor = false;
+            // 
+            // ForwardAll
+            // 
+            this.ForwardAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
+            this.ForwardAll.Image = global::CSC260_Final.Properties.Resources.FF;
+            this.ForwardAll.Location = new System.Drawing.Point(262, 7);
+            this.ForwardAll.Name = "ForwardAll";
+            this.ForwardAll.Size = new System.Drawing.Size(54, 42);
+            this.ForwardAll.TabIndex = 81;
+            this.ForwardAll.UseVisualStyleBackColor = false;
+            this.ForwardAll.Click += new System.EventHandler(this.ForwardAll_Click);
+            // 
+            // RewindAll
+            // 
+            this.RewindAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
+            this.RewindAll.Image = global::CSC260_Final.Properties.Resources.RR;
+            this.RewindAll.Location = new System.Drawing.Point(75, 7);
+            this.RewindAll.Name = "RewindAll";
+            this.RewindAll.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.RewindAll.Size = new System.Drawing.Size(54, 42);
+            this.RewindAll.TabIndex = 80;
+            this.RewindAll.UseVisualStyleBackColor = false;
+            this.RewindAll.Click += new System.EventHandler(this.RewindAll_Click);
+            // 
+            // Rewind
+            // 
+            this.Rewind.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
+            this.Rewind.Image = global::CSC260_Final.Properties.Resources.R;
+            this.Rewind.Location = new System.Drawing.Point(137, 7);
+            this.Rewind.Name = "Rewind";
+            this.Rewind.Size = new System.Drawing.Size(54, 42);
+            this.Rewind.TabIndex = 79;
+            this.Rewind.UseVisualStyleBackColor = false;
+            this.Rewind.Click += new System.EventHandler(this.Rewind_Click);
+            // 
+            // Forward
+            // 
+            this.Forward.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
+            this.Forward.Image = global::CSC260_Final.Properties.Resources.F;
+            this.Forward.Location = new System.Drawing.Point(199, 7);
+            this.Forward.Name = "Forward";
+            this.Forward.Size = new System.Drawing.Size(54, 42);
+            this.Forward.TabIndex = 78;
+            this.Forward.UseVisualStyleBackColor = false;
+            this.Forward.Click += new System.EventHandler(this.Forward_Click);
+            // 
+            // flipBtn
+            // 
+            this.flipBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
+            this.flipBtn.Image = global::CSC260_Final.Properties.Resources.Flip;
+            this.flipBtn.Location = new System.Drawing.Point(12, 7);
+            this.flipBtn.Name = "flipBtn";
+            this.flipBtn.Size = new System.Drawing.Size(54, 42);
+            this.flipBtn.TabIndex = 77;
+            this.flipBtn.UseVisualStyleBackColor = false;
+            this.flipBtn.Click += new System.EventHandler(this.flipBtn_Click);
             // 
             // H1
             // 
@@ -1207,136 +1326,77 @@
             this.A8.TabIndex = 0;
             this.A8.UseVisualStyleBackColor = false;
             // 
-            // whiteCap
+            // Player2Name
             // 
-            this.whiteCap.AutoSize = true;
-            this.whiteCap.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.whiteCap.Location = new System.Drawing.Point(688, 468);
-            this.whiteCap.Name = "whiteCap";
-            this.whiteCap.Size = new System.Drawing.Size(214, 41);
-            this.whiteCap.TabIndex = 74;
-            this.whiteCap.Text = "♜♞♝♛♚♟";
-            this.whiteCap.UseCompatibleTextRendering = true;
+            this.Player2Name.AutoSize = true;
+            this.Player2Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Player2Name.Location = new System.Drawing.Point(654, 65);
+            this.Player2Name.Name = "Player2Name";
+            this.Player2Name.Size = new System.Drawing.Size(124, 36);
+            this.Player2Name.TabIndex = 86;
+            this.Player2Name.Text = "Player 2";
             // 
-            // textBox1
+            // Player1Name
             // 
-            this.textBox1.Location = new System.Drawing.Point(656, 74);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(295, 36);
-            this.textBox1.TabIndex = 75;
-            this.textBox1.Text = "Player 2";
+            this.Player1Name.AutoSize = true;
+            this.Player1Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Player1Name.Location = new System.Drawing.Point(654, 421);
+            this.Player1Name.Name = "Player1Name";
+            this.Player1Name.Size = new System.Drawing.Size(124, 36);
+            this.Player1Name.TabIndex = 87;
+            this.Player1Name.Text = "Player 1";
             // 
-            // textBox2
+            // panel1
             // 
-            this.textBox2.Location = new System.Drawing.Point(656, 419);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(295, 36);
-            this.textBox2.TabIndex = 76;
-            this.textBox2.Text = "Player 1";
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
+            this.panel1.Controls.Add(this.ForwardAll);
+            this.panel1.Controls.Add(this.RewindAll);
+            this.panel1.Controls.Add(this.Rewind);
+            this.panel1.Controls.Add(this.Forward);
+            this.panel1.Controls.Add(this.flipBtn);
+            this.panel1.Location = new System.Drawing.Point(641, 103);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(326, 55);
+            this.panel1.TabIndex = 88;
             // 
-            // flipBtn
+            // panel2
             // 
-            this.flipBtn.Location = new System.Drawing.Point(656, 110);
-            this.flipBtn.Name = "flipBtn";
-            this.flipBtn.Size = new System.Drawing.Size(54, 42);
-            this.flipBtn.TabIndex = 77;
-            this.flipBtn.Text = "flip";
-            this.flipBtn.UseVisualStyleBackColor = true;
-            this.flipBtn.Click += new System.EventHandler(this.flipBtn_Click);
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
+            this.panel2.Controls.Add(this.undoBtn);
+            this.panel2.Controls.Add(this.button7);
+            this.panel2.Controls.Add(this.button6);
+            this.panel2.Location = new System.Drawing.Point(641, 364);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(326, 55);
+            this.panel2.TabIndex = 89;
             // 
-            // button2
+            // panel3
             // 
-            this.button2.Location = new System.Drawing.Point(836, 110);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(54, 42);
-            this.button2.TabIndex = 78;
-            this.button2.Text = "flip";
-            this.button2.UseVisualStyleBackColor = true;
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
+            this.panel3.Location = new System.Drawing.Point(641, 158);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(17, 207);
+            this.panel3.TabIndex = 90;
             // 
-            // button3
+            // panel4
             // 
-            this.button3.Location = new System.Drawing.Point(776, 110);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(54, 42);
-            this.button3.TabIndex = 79;
-            this.button3.Text = "r";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(716, 110);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(54, 42);
-            this.button4.TabIndex = 80;
-            this.button4.Text = "rr";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(896, 110);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(54, 42);
-            this.button5.TabIndex = 81;
-            this.button5.Text = "flip";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(836, 371);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(54, 42);
-            this.button6.TabIndex = 82;
-            this.button6.Text = "cede";
-            this.button6.UseVisualStyleBackColor = true;
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(776, 371);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(54, 42);
-            this.button7.TabIndex = 83;
-            this.button7.Text = "draw";
-            this.button7.UseVisualStyleBackColor = true;
-            // 
-            // undoBtn
-            // 
-            this.undoBtn.Location = new System.Drawing.Point(716, 371);
-            this.undoBtn.Name = "undoBtn";
-            this.undoBtn.Size = new System.Drawing.Size(54, 42);
-            this.undoBtn.TabIndex = 84;
-            this.undoBtn.Text = "undo";
-            this.undoBtn.UseVisualStyleBackColor = true;
-            this.undoBtn.Click += new System.EventHandler(this.undoBtn_Click);
-            // 
-            // MoveTable
-            // 
-            this.MoveTable.AutoScroll = true;
-            this.MoveTable.ColumnCount = 3;
-            this.MoveTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.MoveTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
-            this.MoveTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.MoveTable.Location = new System.Drawing.Point(656, 158);
-            this.MoveTable.Name = "MoveTable";
-            this.MoveTable.RowCount = 1;
-            this.MoveTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.MoveTable.Size = new System.Drawing.Size(300, 200);
-            this.MoveTable.TabIndex = 85;
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
+            this.panel4.Location = new System.Drawing.Point(955, 158);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(12, 207);
+            this.panel4.TabIndex = 91;
             // 
             // GameScreenForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1075, 584);
+            this.Controls.Add(this.panel4);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.Player1Name);
+            this.Controls.Add(this.Player2Name);
             this.Controls.Add(this.MoveTable);
-            this.Controls.Add(this.undoBtn);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.flipBtn);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.whiteCap);
             this.Controls.Add(this.blackCap);
             this.Controls.Add(this.labelCheck);
@@ -1410,6 +1470,8 @@
             this.Text = "Morganti Chess";
             this.Load += new System.EventHandler(this.GameScreenForm_Load);
             this.BackgroundBorder.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1501,17 +1563,21 @@
         public System.Windows.Forms.Label labelCheck;
         private System.Windows.Forms.Label blackCap;
         private System.Windows.Forms.Label whiteCap;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button flipBtn;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button Forward;
+        private System.Windows.Forms.Button Rewind;
+        private System.Windows.Forms.Button RewindAll;
+        private System.Windows.Forms.Button ForwardAll;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button undoBtn;
         private System.Windows.Forms.TableLayoutPanel MoveTable;
+        private System.Windows.Forms.Label Player2Name;
+        private System.Windows.Forms.Label Player1Name;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
     }
 }
 

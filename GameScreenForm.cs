@@ -123,5 +123,21 @@ namespace CSC260_Final {
                 _numbArr[i].Text = "" + (char)(49 + (_flipBoard ? (7 - i) : i));
             }
         }
+
+        private void RewindAll_Click(object sender, EventArgs e) {
+            _game.GoBack(true);
+        }
+
+        private void ForwardAll_Click(object sender, EventArgs e) {
+            _game.GoForward(true);
+        }
+
+        private void Rewind_Click(object sender, EventArgs e) {
+            _game.GoBack(false);
+        }
+
+        private void Forward_Click(object sender, EventArgs e) {
+            _game.GoForward(false);
+        }
     }
 }

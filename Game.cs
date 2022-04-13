@@ -8,6 +8,13 @@ using System.Windows.Forms;
 namespace CSC260_Final {
     internal class Game {
 
+        public static System.Drawing.Color nordRed = System.Drawing.Color.FromArgb(191, 97, 106);
+        public static System.Drawing.Color nordGreen = System.Drawing.Color.FromArgb(163,190,140);
+        public static System.Drawing.Color nordWhite = System.Drawing.Color.FromArgb(236,239,244);
+        public static System.Drawing.Color nordBlack = System.Drawing.Color.FromArgb(94,129,172);
+        public static System.Drawing.Color nordPrev = System.Drawing.Color.FromArgb(143,188,187);
+        public static System.Drawing.Color nordCurr = System.Drawing.Color.FromArgb(180,142,173);
+
         private Board _board;
         private string _playerTurn;
         private Dictionary<String, Dictionary<String, int>> _captures;
@@ -19,7 +26,7 @@ namespace CSC260_Final {
         private Stack<Moves> _previousMoves;
         private int _movesMade;
         private bool _block;
-        private int? _locationPrevView;
+        private int _locationPrevView;
 
         public Game () {
             _board = new Board ();
@@ -32,7 +39,7 @@ namespace CSC260_Final {
             _playerTurn = "White";
             _movesMade = 0;
             _block = false;
-            _locationPrevView = null;
+            _locationPrevView = 0;
         }
 
         public void Run () {
@@ -63,14 +70,14 @@ namespace CSC260_Final {
 
                 foreach ((int i, int j) in moves) {
                     if (!GameScreenForm.Flip) {
-                        GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.LimeGreen;
+                        GameScreenForm.BtnArr[i, j].BackColor = nordGreen;
                         if (_board.PieceAt(i, j).Color != "null")
-                            GameScreenForm.BtnArr[i, j].BackColor = System.Drawing.Color.Crimson;
+                            GameScreenForm.BtnArr[i, j].BackColor = nordRed;
                     }
                     else {
-                        GameScreenForm.BtnArr[7-i, 7-j].BackColor = System.Drawing.Color.LimeGreen;
+                        GameScreenForm.BtnArr[7-i, 7-j].BackColor = nordGreen;
                         if (_board.PieceAt(i, j).Color != "null")
-                            GameScreenForm.BtnArr[7-i, 7-j].BackColor = System.Drawing.Color.Crimson;
+                            GameScreenForm.BtnArr[7-i, 7-j].BackColor = nordRed;
                     }
                 }
 
@@ -126,11 +133,13 @@ namespace CSC260_Final {
                 for (int j = 0; j < 8; j++) {
                     if (!GameScreenForm.Flip) {
                         GameScreenForm.BtnArr[i, j].Image = board.PieceAt(i, j).Color != "null" ? board.PieceAt(i, j).Image : null;
-                        GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? System.Drawing.Color.FromArgb(240, 217, 181) : System.Drawing.Color.FromArgb(181, 136, 99);
+                        //GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? System.Drawing.Color.FromArgb(240, 217, 181) : System.Drawing.Color.FromArgb(181, 136, 99);
+                        GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? nordWhite : nordBlack;
                     }
                     else {
                         GameScreenForm.BtnArr[i, j].Image = board.PieceAt(7-i, 7-j).Color != "null" ? board.PieceAt(7-i, 7-j).Image : null;
-                        GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? System.Drawing.Color.FromArgb(240, 217, 181) : System.Drawing.Color.FromArgb(181, 136, 99);
+                        GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? nordWhite : nordBlack;
+                        //GameScreenForm.BtnArr[i, j].BackColor = (i + j) % 2 == 0 ? System.Drawing.Color.FromArgb(240, 217, 181) : System.Drawing.Color.FromArgb(181, 136, 99);
                     }
                 }
             }
@@ -168,9 +177,10 @@ namespace CSC260_Final {
             }
             
             Label addMove = new Label();
-            addMove.BackColor = System.Drawing.Color.Violet;
+            addMove.BackColor = nordCurr;
             addMove.Height = 25;
             addMove.Text = move.PGN;
+            addMove.Name = "" + _movesMade;
             AddEventMove(_movesMade, addMove);
             GameScreenForm.MovementTable.Controls.Add(addMove, _movesMade % 2 + 1, _movesMade / 2);
             GameScreenForm.MovementTable.HorizontalScroll.Visible = false;
@@ -183,12 +193,13 @@ namespace CSC260_Final {
                 }
                 if (pos == _movesMade-1) {
                     _block = false;
-                    label.BackColor = System.Drawing.Color.Violet;
+                    label.BackColor = nordCurr;
                 }
                 else {
                     _block = true;
-                    label.BackColor = System.Drawing.Color.Blue;
+                    label.BackColor = nordPrev;
                 }
+                _locationPrevView = _movesMade - pos - 1;
                 GameScreenForm.UpdateCheckLabel(_previousMoves.ElementAt(_previousMoves.Count - pos - 1).FEN);
                 Render(new Board(_previousMoves.ElementAt(_previousMoves.Count - pos - 1).FEN));
             };
@@ -236,18 +247,52 @@ namespace CSC260_Final {
                     GameScreenForm.MovementTable.Controls.RemoveAt(count - 1);
 
                 if (GameScreenForm.MovementTable.Controls.Count > 0)
-                    GameScreenForm.MovementTable.Controls[GameScreenForm.MovementTable.Controls.Count-1].BackColor = System.Drawing.Color.Violet;
+                    GameScreenForm.MovementTable.Controls[GameScreenForm.MovementTable.Controls.Count - 1].BackColor = nordCurr;
 
                 Render();
             }
         }
 
         public void GoBack(bool all) {
-            if (all) {
+            _block = true;
+            foreach (Label x in GameScreenForm.MovementTable.Controls) {
+                x.BackColor = System.Drawing.Color.Transparent;
+            }
 
+            if (all) {
+                Render(new Board());
+                _locationPrevView = _movesMade;
+            }
+            else if (_locationPrevView < _movesMade-1) {
+                _locationPrevView++;
+                Render(new Board(_previousMoves.ElementAt(_locationPrevView).FEN));
+                GameScreenForm.MovementTable.Controls.Find("" + (_movesMade - _locationPrevView - 1), false)[0].BackColor = nordPrev;
             }
             else {
+                _locationPrevView = _movesMade;
+                Render(new Board());
+            }
+        }
 
+        public void GoForward (bool all) {
+            _block = true;
+            foreach (Label x in GameScreenForm.MovementTable.Controls) {
+                x.BackColor = System.Drawing.Color.Transparent;
+            }
+            if (all) {
+                Render();
+                _block = false;
+                _locationPrevView = 0;
+                GameScreenForm.MovementTable.Controls.Find("" + (_movesMade - _locationPrevView - 1), false)[0].BackColor = nordCurr;
+            }
+            else if (_locationPrevView > 0) {
+                _locationPrevView--;
+                Render(new Board(_previousMoves.ElementAt(_locationPrevView).FEN));
+                GameScreenForm.MovementTable.Controls.Find("" + (_movesMade - _locationPrevView - 1), false)[0].BackColor = nordPrev;
+            }
+            if (_locationPrevView == 0 && _movesMade != 0) {
+                _block = false;
+                GameScreenForm.MovementTable.Controls.Find("" + (_movesMade - _locationPrevView - 1), false)[0].BackColor = nordCurr;
             }
         }
 

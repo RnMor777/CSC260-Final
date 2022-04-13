@@ -128,5 +128,15 @@
   <ItemGroup>
     <None Include="Resources\BKing.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Undo.png" />
+    <None Include="Resources\R.png" />
+    <None Include="Resources\F.png" />
+    <None Include="Resources\Concede.png" />
+    <None Include="Resources\Draw.png" />
+    <Content Include="Resources\FF.png" />
+    <None Include="Resources\Flip.png" />
+    <None Include="Resources\RR.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
