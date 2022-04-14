@@ -76,9 +76,15 @@
             this.labelCheck = new System.Windows.Forms.Label();
             this.blackCap = new System.Windows.Forms.Label();
             this.whiteCap = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
             this.MoveTable = new System.Windows.Forms.TableLayoutPanel();
+            this.Player2Name = new System.Windows.Forms.Label();
+            this.Player1Name = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.undoBtn = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.ForwardAll = new System.Windows.Forms.Button();
             this.RewindAll = new System.Windows.Forms.Button();
@@ -117,12 +123,6 @@
             this.B8 = new System.Windows.Forms.Button();
             this.C8 = new System.Windows.Forms.Button();
             this.A8 = new System.Windows.Forms.Button();
-            this.Player2Name = new System.Windows.Forms.Label();
-            this.Player1Name = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
             this.BackgroundBorder.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -749,16 +749,17 @@
             this.labelCheck.BackColor = System.Drawing.Color.Transparent;
             this.labelCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelCheck.ForeColor = System.Drawing.Color.Black;
-            this.labelCheck.Location = new System.Drawing.Point(173, 534);
+            this.labelCheck.Location = new System.Drawing.Point(129, 534);
             this.labelCheck.Name = "labelCheck";
-            this.labelCheck.Size = new System.Drawing.Size(693, 32);
+            this.labelCheck.Size = new System.Drawing.Size(311, 32);
             this.labelCheck.TabIndex = 71;
+            this.labelCheck.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // blackCap
             // 
             this.blackCap.AutoSize = true;
             this.blackCap.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.blackCap.Location = new System.Drawing.Point(656, 41);
+            this.blackCap.Location = new System.Drawing.Point(653, 68);
             this.blackCap.Name = "blackCap";
             this.blackCap.Size = new System.Drawing.Size(143, 29);
             this.blackCap.TabIndex = 73;
@@ -769,22 +770,12 @@
             // 
             this.whiteCap.AutoSize = true;
             this.whiteCap.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.whiteCap.Location = new System.Drawing.Point(656, 461);
+            this.whiteCap.Location = new System.Drawing.Point(653, 464);
             this.whiteCap.Name = "whiteCap";
             this.whiteCap.Size = new System.Drawing.Size(143, 29);
             this.whiteCap.TabIndex = 74;
             this.whiteCap.Text = "♜♞♝♛♚♟";
             this.whiteCap.UseCompatibleTextRendering = true;
-            // 
-            // button7
-            // 
-            this.button7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
-            this.button7.Image = global::CSC260_Final.Properties.Resources.Draw;
-            this.button7.Location = new System.Drawing.Point(137, 7);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(54, 42);
-            this.button7.TabIndex = 83;
-            this.button7.UseVisualStyleBackColor = false;
             // 
             // MoveTable
             // 
@@ -801,22 +792,92 @@
             this.MoveTable.Size = new System.Drawing.Size(300, 207);
             this.MoveTable.TabIndex = 85;
             // 
+            // Player2Name
+            // 
+            this.Player2Name.AutoSize = true;
+            this.Player2Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Player2Name.Location = new System.Drawing.Point(654, 27);
+            this.Player2Name.Name = "Player2Name";
+            this.Player2Name.Size = new System.Drawing.Size(124, 36);
+            this.Player2Name.TabIndex = 86;
+            this.Player2Name.Text = "Player 2";
+            // 
+            // Player1Name
+            // 
+            this.Player1Name.AutoSize = true;
+            this.Player1Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Player1Name.Location = new System.Drawing.Point(654, 425);
+            this.Player1Name.Name = "Player1Name";
+            this.Player1Name.Size = new System.Drawing.Size(124, 36);
+            this.Player1Name.TabIndex = 87;
+            this.Player1Name.Text = "Player 1";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
+            this.panel1.Controls.Add(this.ForwardAll);
+            this.panel1.Controls.Add(this.RewindAll);
+            this.panel1.Controls.Add(this.Rewind);
+            this.panel1.Controls.Add(this.Forward);
+            this.panel1.Controls.Add(this.flipBtn);
+            this.panel1.Location = new System.Drawing.Point(641, 103);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(331, 55);
+            this.panel1.TabIndex = 88;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
+            this.panel2.Controls.Add(this.undoBtn);
+            this.panel2.Controls.Add(this.button7);
+            this.panel2.Controls.Add(this.button6);
+            this.panel2.Location = new System.Drawing.Point(641, 364);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(331, 55);
+            this.panel2.TabIndex = 89;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
+            this.panel3.Location = new System.Drawing.Point(641, 158);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(17, 207);
+            this.panel3.TabIndex = 90;
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
+            this.panel4.Location = new System.Drawing.Point(955, 158);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(17, 207);
+            this.panel4.TabIndex = 91;
+            // 
             // undoBtn
             // 
             this.undoBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
             this.undoBtn.Image = global::CSC260_Final.Properties.Resources.Undo;
-            this.undoBtn.Location = new System.Drawing.Point(75, 7);
+            this.undoBtn.Location = new System.Drawing.Point(78, 7);
             this.undoBtn.Name = "undoBtn";
             this.undoBtn.Size = new System.Drawing.Size(54, 42);
             this.undoBtn.TabIndex = 84;
             this.undoBtn.UseVisualStyleBackColor = false;
             this.undoBtn.Click += new System.EventHandler(this.undoBtn_Click);
             // 
+            // button7
+            // 
+            this.button7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
+            this.button7.Image = global::CSC260_Final.Properties.Resources.Draw;
+            this.button7.Location = new System.Drawing.Point(140, 7);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(54, 42);
+            this.button7.TabIndex = 83;
+            this.button7.UseVisualStyleBackColor = false;
+            // 
             // button6
             // 
             this.button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
             this.button6.Image = global::CSC260_Final.Properties.Resources.Concede;
-            this.button6.Location = new System.Drawing.Point(199, 7);
+            this.button6.Location = new System.Drawing.Point(202, 7);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(54, 42);
             this.button6.TabIndex = 82;
@@ -826,7 +887,7 @@
             // 
             this.ForwardAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
             this.ForwardAll.Image = global::CSC260_Final.Properties.Resources.FF;
-            this.ForwardAll.Location = new System.Drawing.Point(262, 7);
+            this.ForwardAll.Location = new System.Drawing.Point(265, 7);
             this.ForwardAll.Name = "ForwardAll";
             this.ForwardAll.Size = new System.Drawing.Size(54, 42);
             this.ForwardAll.TabIndex = 81;
@@ -837,7 +898,7 @@
             // 
             this.RewindAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
             this.RewindAll.Image = global::CSC260_Final.Properties.Resources.RR;
-            this.RewindAll.Location = new System.Drawing.Point(75, 7);
+            this.RewindAll.Location = new System.Drawing.Point(78, 7);
             this.RewindAll.Name = "RewindAll";
             this.RewindAll.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.RewindAll.Size = new System.Drawing.Size(54, 42);
@@ -849,7 +910,7 @@
             // 
             this.Rewind.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
             this.Rewind.Image = global::CSC260_Final.Properties.Resources.R;
-            this.Rewind.Location = new System.Drawing.Point(137, 7);
+            this.Rewind.Location = new System.Drawing.Point(140, 7);
             this.Rewind.Name = "Rewind";
             this.Rewind.Size = new System.Drawing.Size(54, 42);
             this.Rewind.TabIndex = 79;
@@ -860,7 +921,7 @@
             // 
             this.Forward.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
             this.Forward.Image = global::CSC260_Final.Properties.Resources.F;
-            this.Forward.Location = new System.Drawing.Point(199, 7);
+            this.Forward.Location = new System.Drawing.Point(202, 7);
             this.Forward.Name = "Forward";
             this.Forward.Size = new System.Drawing.Size(54, 42);
             this.Forward.TabIndex = 78;
@@ -871,7 +932,7 @@
             // 
             this.flipBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(222)))), ((int)(((byte)(233)))));
             this.flipBtn.Image = global::CSC260_Final.Properties.Resources.Flip;
-            this.flipBtn.Location = new System.Drawing.Point(12, 7);
+            this.flipBtn.Location = new System.Drawing.Point(15, 7);
             this.flipBtn.Name = "flipBtn";
             this.flipBtn.Size = new System.Drawing.Size(54, 42);
             this.flipBtn.TabIndex = 77;
@@ -1325,66 +1386,6 @@
             this.A8.Size = new System.Drawing.Size(55, 55);
             this.A8.TabIndex = 0;
             this.A8.UseVisualStyleBackColor = false;
-            // 
-            // Player2Name
-            // 
-            this.Player2Name.AutoSize = true;
-            this.Player2Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Player2Name.Location = new System.Drawing.Point(654, 65);
-            this.Player2Name.Name = "Player2Name";
-            this.Player2Name.Size = new System.Drawing.Size(124, 36);
-            this.Player2Name.TabIndex = 86;
-            this.Player2Name.Text = "Player 2";
-            // 
-            // Player1Name
-            // 
-            this.Player1Name.AutoSize = true;
-            this.Player1Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Player1Name.Location = new System.Drawing.Point(654, 421);
-            this.Player1Name.Name = "Player1Name";
-            this.Player1Name.Size = new System.Drawing.Size(124, 36);
-            this.Player1Name.TabIndex = 87;
-            this.Player1Name.Text = "Player 1";
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
-            this.panel1.Controls.Add(this.ForwardAll);
-            this.panel1.Controls.Add(this.RewindAll);
-            this.panel1.Controls.Add(this.Rewind);
-            this.panel1.Controls.Add(this.Forward);
-            this.panel1.Controls.Add(this.flipBtn);
-            this.panel1.Location = new System.Drawing.Point(641, 103);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(326, 55);
-            this.panel1.TabIndex = 88;
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
-            this.panel2.Controls.Add(this.undoBtn);
-            this.panel2.Controls.Add(this.button7);
-            this.panel2.Controls.Add(this.button6);
-            this.panel2.Location = new System.Drawing.Point(641, 364);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(326, 55);
-            this.panel2.TabIndex = 89;
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
-            this.panel3.Location = new System.Drawing.Point(641, 158);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(17, 207);
-            this.panel3.TabIndex = 90;
-            // 
-            // panel4
-            // 
-            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(76)))), ((int)(((byte)(94)))));
-            this.panel4.Location = new System.Drawing.Point(955, 158);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(12, 207);
-            this.panel4.TabIndex = 91;
             // 
             // GameScreenForm
             // 

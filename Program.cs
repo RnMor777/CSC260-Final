@@ -13,7 +13,8 @@ namespace CSC260_Final {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GameScreenForm());
+            //Application.Run(new GameScreenForm());
+            Application.Run(new Start());
         }
     }
 }

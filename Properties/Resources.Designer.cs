@@ -213,6 +213,26 @@ namespace CSC260_Final.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap StartBishop {
+            get {
+                object obj = ResourceManager.GetObject("StartBishop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StartKnight {
+            get {
+                object obj = ResourceManager.GetObject("StartKnight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Undo {
             get {
                 object obj = ResourceManager.GetObject("Undo", resourceCulture);

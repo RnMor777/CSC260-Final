@@ -22,7 +22,6 @@ namespace CSC260_Final {
         private int _halfmoves;
         private Pieces _activePiece;
         private List<(int i, int j)> _activeMoves;
-        //private List<List<(int i, int j)>> checks;
         private Stack<Moves> _previousMoves;
         private int _movesMade;
         private bool _block;
@@ -90,6 +89,7 @@ namespace CSC260_Final {
 
         private void DoMove (Pieces destination) {
             int currCol = _activePiece.CurrentCol;
+            GameScreenForm.UpdateCheckLabel("");
 
             _previousMoves.Push(new Moves(_board.AllPieces, _activePiece, destination, _board.EnPassant));
 
@@ -109,18 +109,17 @@ namespace CSC260_Final {
             if (flags["EnPassant"]) 
                 _previousMoves.Peek().WasPassant(currCol);
 
+            if (flags["In Check"]) {
+                _previousMoves.Peek().WasCheck();
+                GameScreenForm.UpdateCheckLabel(String.Format("{0} in check", Game.FlipColor(_playerTurn)));
+            }
 
-            _playerTurn = _playerTurn == "White" ? "Black" : "White";
+            _playerTurn = Game.FlipColor(_playerTurn);
             _activePiece = null;
             UpdateMoves(_previousMoves.Peek());
             _previousMoves.Peek().FEN = CreateFen(_board);
             _movesMade += 1;
 
-            GameScreenForm.UpdateCheckLabel("");
-            if (flags["In Check"]) {
-                _previousMoves.Peek().WasCheck();
-                GameScreenForm.UpdateCheckLabel(String.Format("{0} in check", _playerTurn));
-            }
             Render();
         }
 
@@ -160,8 +159,6 @@ namespace CSC260_Final {
                 }
             }
             GameScreenForm.BlackCaps.Text = labText.ToString();
-
-            //GameScreenForm.UpdateCheckLabel(CreateFen(board));
         }
 
         public void UpdateMoves (Moves move) {
@@ -200,7 +197,7 @@ namespace CSC260_Final {
                     label.BackColor = nordPrev;
                 }
                 _locationPrevView = _movesMade - pos - 1;
-                GameScreenForm.UpdateCheckLabel(_previousMoves.ElementAt(_previousMoves.Count - pos - 1).FEN);
+                //GameScreenForm.UpdateCheckLabel(_previousMoves.ElementAt(_previousMoves.Count - pos - 1).FEN);
                 Render(new Board(_previousMoves.ElementAt(_previousMoves.Count - pos - 1).FEN));
             };
         }
@@ -342,6 +339,10 @@ namespace CSC260_Final {
 
             fen.Append(" ");
             return fen.ToString();
+        }
+
+        public static string FlipColor (string color) {
+            return color == "Black" ? "White" : "Black";
         }
     }
 }
