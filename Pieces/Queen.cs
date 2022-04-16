@@ -30,10 +30,10 @@ namespace CSC260_Final {
                 i = CurrentRow + offsetI[k];
                 j = CurrentCol + offsetJ[k];
                 while (IsWithinBoard(i, j)) {
-                    if (board.PieceAt(i, j).Color == "null") {
+                    if (board.PieceAt((i, j)).Color == "null") {
                         retList.Add((i, j));
                     }
-                    else if (board.PieceAt(i, j).Color == Color) {
+                    else if (board.PieceAt((i, j)).Color == Color) {
                         break;
                     }
                     else {

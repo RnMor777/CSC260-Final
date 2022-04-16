@@ -49,7 +49,7 @@ namespace CSC260_Final {
             set { _fen = value; }
         }
 
-        public Moves(Pieces[,] pieces, Pieces orig, Pieces dest, (int i, int j) enp) {
+        public Moves(Pieces orig, Pieces dest, (int i, int j) enp) {
             _flags = new Dictionary<string, bool>() { { "EnPassant", false}, { "Castle", false } };
             StringBuilder tmpPgn = new StringBuilder();
             _start = orig.Copy();

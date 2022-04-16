@@ -61,6 +61,7 @@
     <Compile Include="Forms\MenuScreen.Designer.cs">
       <DependentUpon>MenuScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pieces\EmptyPiece.cs" />
     <Compile Include="Pieces\Pieces.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -148,6 +149,9 @@
     <Content Include="Resources\FF.png" />
     <None Include="Resources\Flip.png" />
     <None Include="Resources\RR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Players\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

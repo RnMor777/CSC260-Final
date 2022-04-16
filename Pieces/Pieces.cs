@@ -33,6 +33,7 @@ namespace CSC260_Final {
         }
         public (int row, int col) Position {
             get { return (_currentRow, _currentCol); }
+            set { (_currentRow, _currentCol) = value; }
         }
         public System.Drawing.Image Image {
             get { return _image; }
@@ -72,19 +73,19 @@ namespace CSC260_Final {
             bool sieve;
             int x, y;
 
-            board.SetPieceAt(this.CurrentRow, this.CurrentCol, null);
+            board.SetPieceAt((this.CurrentRow, this.CurrentCol), null);
             foreach ((int i, int j) in allMoves) {
                 if (countNone == xmoves.Length) {
-                    board.SetPieceAt(origX, origY, this);
+                    board.SetPieceAt((origX, origY), this);
                     return allMoves;
                 }
 
-                tmp = board.PieceAt(i, j);
+                tmp = board.PieceAt((i, j));
                 if (tmp.Color.Equals("null")) 
                     tmp = null;
 
                 sieve = false;
-                board.SetPieceAt(i, j, this);
+                board.SetPieceAt((i, j), this);
                 (int i, int j) kingPos = board.KingPosition(turn);
 
                 for (int k = 0; k < xmoves.Length; k++) {
@@ -96,7 +97,7 @@ namespace CSC260_Final {
                         x += xmoves[k];
                         y += ymoves[k];
                     }
-                    while (x >= 0 && x < 8 && y >= 0 && y < 8 && board.PieceAt(x, y).Color.Equals("null") && k < 8);
+                    while (x >= 0 && x < 8 && y >= 0 && y < 8 && board.PieceAt((x, y)).Color.Equals("null") && k < 8);
                     if (x < 0 || x > 7 || y < 0 || y > 7) {
                         if (!this.Name.Equals("King")) {
                             noCheck[k] = true;
@@ -105,7 +106,7 @@ namespace CSC260_Final {
                         continue;
                     }
 
-                    Pieces foundPiece = board.PieceAt(x, y);
+                    Pieces foundPiece = board.PieceAt((x, y));
 
                     List<String> names;
                     if (k >= 16) names = new List<string> { "Pawn" };
@@ -120,10 +121,10 @@ namespace CSC260_Final {
                         countNone += 1;
                     }
                 }
-                board.SetPieceAt(i, j, tmp);
+                board.SetPieceAt((i, j), tmp);
                 if (!sieve) sievedMoves.Add((i, j));
             }
-            board.SetPieceAt(origX, origY, this);
+            board.SetPieceAt((origX, origY), this);
             if (this.Name == "King") {
                 if (sievedMoves.Contains((CurrentRow,CurrentCol-2)) && !sievedMoves.Contains((CurrentRow,CurrentCol-1))) {
                     sievedMoves.Remove((CurrentRow, CurrentCol - 2));

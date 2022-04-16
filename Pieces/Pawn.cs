@@ -27,19 +27,19 @@ namespace CSC260_Final {
             string oppColor = Color == "White" ? "Black" : "White";
 
             if (CurrentRow == baseRow) {
-                if (board.PieceAt(baseRow + direction, CurrentCol).Color == "null") {
+                if (board.PieceAt((baseRow + direction, CurrentCol)).Color == "null") {
                     retList.Add((baseRow + direction, CurrentCol));
 
-                    if (board.PieceAt(baseRow + 2 * direction, CurrentCol).Color == "null")
+                    if (board.PieceAt((baseRow + 2 * direction, CurrentCol)).Color == "null")
                         retList.Add((baseRow + 2 * direction, CurrentCol));
                 }
             }
-            else if (IsWithinBoard(CurrentRow + direction, CurrentCol) && board.PieceAt(CurrentRow + direction, CurrentCol).Color == "null") 
+            else if (IsWithinBoard(CurrentRow + direction, CurrentCol) && board.PieceAt((CurrentRow + direction, CurrentCol)).Color == "null") 
                 retList.Add((CurrentRow + direction, CurrentCol));
 
-            if (IsWithinBoard(CurrentRow + direction, CurrentCol - 1) && board.PieceAt(CurrentRow + direction, CurrentCol - 1).Color == oppColor)
+            if (IsWithinBoard(CurrentRow + direction, CurrentCol - 1) && board.PieceAt((CurrentRow + direction, CurrentCol - 1)).Color == oppColor)
                 retList.Add((CurrentRow + direction, CurrentCol - 1));
-            if (IsWithinBoard(CurrentRow + direction, CurrentCol + 1) && board.PieceAt(CurrentRow + direction, CurrentCol + 1).Color == oppColor)
+            if (IsWithinBoard(CurrentRow + direction, CurrentCol + 1) && board.PieceAt((CurrentRow + direction, CurrentCol + 1)).Color == oppColor)
                 retList.Add((CurrentRow + direction, CurrentCol + 1));
 
             if (IsWithinBoard(CurrentRow + direction, CurrentCol - 1) && board.EnPassant == (CurrentRow + direction, CurrentCol - 1)) 

@@ -43,7 +43,7 @@ namespace CSC260_Final {
 
             for (int i = -1; i < 2; i++) {
                 for (int j = -1; j < 2; j++) {
-                    if (IsWithinBoard(CurrentRow + i, CurrentCol + j) && board.PieceAt(CurrentRow + i, CurrentCol + j).Color != Color ) {
+                    if (IsWithinBoard(CurrentRow + i, CurrentCol + j) && board.PieceAt((CurrentRow + i, CurrentCol + j)).Color != Color ) {
                         retList.Add((CurrentRow + i, CurrentCol + j));
                     }
                 }
@@ -52,12 +52,12 @@ namespace CSC260_Final {
             if (_castleLeft && !board.InCheck(Color)) {
                 bool fail = false;
                 for (int i = 3; i > 0; i--) {
-                    if (!board.PieceAt(CurrentRow, i).Color.Equals("null")) {
+                    if (!board.PieceAt((CurrentRow, i)).Color.Equals("null")) {
                         fail = true;
                         break;
                     }
                 }
-                if (!board.PieceAt(CurrentRow, 0).Equals(new Rook(Color, CurrentRow, 0))) 
+                if (!board.PieceAt((CurrentRow, 0)).Equals(new Rook(Color, CurrentRow, 0))) 
                     fail = true;
                 if (!fail) 
                     retList.Add((CurrentRow, 2));
@@ -66,12 +66,12 @@ namespace CSC260_Final {
             if (_castleRight && !board.InCheck(Color)) {
                 bool fail = false;
                 for (int i = 5; i < 7; i++) {
-                    if (!board.PieceAt(CurrentRow, i).Color.Equals("null")) {
+                    if (!board.PieceAt((CurrentRow, i)).Color.Equals("null")) {
                         fail = true;
                         break;
                     }
                 }
-                if (!board.PieceAt(CurrentRow, 7).Equals(new Rook(Color, CurrentRow, 7))) 
+                if (!board.PieceAt((CurrentRow, 7)).Equals(new Rook(Color, CurrentRow, 7))) 
                     fail = true;
                 if (!fail) 
                     retList.Add((CurrentRow, 6));
