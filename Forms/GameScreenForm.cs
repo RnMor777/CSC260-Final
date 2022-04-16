@@ -66,7 +66,7 @@ namespace CSC260_Final {
 
             //tmpbox.Text = "♜♞♝♛♚♟";
 
-            _game = new Game();
+            _game = new Game(this);
 
             this.TransparencyKey = Color.Empty;
             _labelCheck = labelCheck;

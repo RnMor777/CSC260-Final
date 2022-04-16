@@ -26,6 +26,7 @@ namespace CSC260_Final {
         private int _movesMade;
         private bool _block;
         private int _locationPrevView;
+        private AiPlayer _ai;
 
         public Game () {
             _board = new Board ();
@@ -39,6 +40,12 @@ namespace CSC260_Final {
             _movesMade = 0;
             _block = false;
             _locationPrevView = 0;
+            //_ai = new AiPlayer();
+        }
+
+        public Game (GameScreenForm form) : this() {
+            _ai = new AiPlayer(form);
+            
         }
 
         public void Run () {
@@ -55,6 +62,8 @@ namespace CSC260_Final {
                 return;
             if (_activePiece != null && _activeMoves.Contains((row, col))) {
                 DoMove(_board.PieceAt((row, col)));
+                (Pieces x, (int i, int j)) move = _ai.TakeTurn(_board, this);
+                GameScreenForm.UpdateCheckLabel(String.Format("Name: {2}, Row: {0}, Col: {1}", move.Item2.i, move.Item2.j, move.x.Name));
                 return;
             }
             else if (_activePiece != null) {

@@ -63,6 +63,10 @@
     </Compile>
     <Compile Include="Pieces\EmptyPiece.cs" />
     <Compile Include="Pieces\Pieces.cs" />
+    <Compile Include="Players\AiPlayer.cs" />
+    <Compile Include="Players\HumanPlayer.cs" />
+    <Compile Include="Players\IPlayer.cs" />
+    <Compile Include="Players\Weights.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pieces\Bishop.cs" />
@@ -150,8 +154,6 @@
     <None Include="Resources\Flip.png" />
     <None Include="Resources\RR.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Players\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

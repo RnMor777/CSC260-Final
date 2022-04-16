@@ -12,7 +12,7 @@ namespace CSC260_Final {
         private Dictionary<string, bool> _inCheck;
         private (int i, int j) _enPassantSquare;
 
-        protected List<Pieces> AllPieces {
+        public List<Pieces> AllPieces {
             get { return _piecesList; }
         }
 
@@ -23,6 +23,7 @@ namespace CSC260_Final {
 
         public Board () {
             _piecesList = new List<Pieces> ();
+            _inCheck = new Dictionary<string, bool> { { "White", false}, { "Black", false} };
             _piecesList.Add(new Rook("Black", 0, 0));
             _piecesList.Add(new Knight("Black", 0, 1));
             _piecesList.Add(new Bishop("Black", 0, 2));
@@ -43,10 +44,10 @@ namespace CSC260_Final {
                 _piecesList.Add(new Pawn("Black", 1, i));
                 _piecesList.Add(new Pawn("White", 6, i));
             }
-            _inCheck = new Dictionary<string, bool> { { "White", false}, { "Black", false} };
         }
 
         public Board (Board board) {
+            _inCheck = new Dictionary<string, bool> { { "White", false}, { "Black", false} };
             _piecesList = new List<Pieces>();
             foreach (Pieces x in board.AllPieces) {
                 _piecesList.Add(x.Copy());
@@ -55,6 +56,7 @@ namespace CSC260_Final {
 
         public Board (string fen) {
             _piecesList = new List<Pieces>();
+            _inCheck = new Dictionary<string, bool> { { "White", false}, { "Black", false} };
             int row = 0;
             int col = 0;
             int index = 0;
