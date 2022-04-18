@@ -11,66 +11,18 @@ using System.Windows.Forms;
 namespace CSC260_Final {
     public partial class GameScreenForm : Form {
 
-        private static Button[,] _btnArr;
-        private static Label _labelCheck;
-        private static Label _whiteCaps;
-        private static Label _blackCaps;
-        private static TableLayoutPanel _moveTable;
-        private Label[] _letterArr;
-        private Label[] _numbArr;
         private Game _game;
-        private static bool _flipBoard;
-
-        public static Button[,] BtnArr {
-            get { return _btnArr; }
-        }
-
-        public static Label WhiteCaps {
-            get { return _whiteCaps; }
-        }
-
-        public static Label BlackCaps {
-            get { return _blackCaps; }
-        }
-
-        public static TableLayoutPanel MovementTable {
-            get { return _moveTable; }
-        }
-
-        public static bool Flip {
-            get { return _flipBoard; }
-        }
 
         public GameScreenForm() {
             InitializeComponent();
         }
 
-
         private void GameScreenForm_Load(object sender, EventArgs e) {
-            //System.Drawing.Text.PrivateFontCollection pfc = new System.Drawing.Text.PrivateFontCollection();
-            //int fontLength = Properties.Resources.FreeSerif.Length;
-            //byte[] fontdata = Properties.Resources.FreeSerif;
-            //System.IntPtr data = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontLength);
-            //System.Runtime.InteropServices.Marshal.Copy(fontdata, 0, data, fontLength);
-            //pfc.AddMemoryFont(data, fontLength);
-            //blackCap.Font = new Font(pfc.Families[0], blackCap.Font.Size);
-            //whiteCap.Font = new Font(pfc.Families[0], whiteCap.Font.Size);
-            _blackCaps = blackCap;
-            _whiteCaps = whiteCap;
-            _moveTable = MoveTable;
-            _moveTable.AutoScroll = false;
-            _moveTable.HorizontalScroll.Enabled = false;
-            _moveTable.HorizontalScroll.Visible = false;
-            _moveTable.AutoScroll = true;
-            _flipBoard = false;
-
-            //tmpbox.Text = "♜♞♝♛♚♟";
-
-            _game = new Game(this);
-
             this.TransparencyKey = Color.Empty;
-            _labelCheck = labelCheck;
-            _btnArr = new Button[,] {
+
+            _game = new Game();
+
+            Button[,] arr = new Button[,] {
                 { A8, B8, C8, D8, E8, F8, G8, H8},
                 { A7, B7, C7, D7, E7, F7, G7, H7},
                 { A6, B6, C6, D6, E6, F6, G6, H6},
@@ -82,12 +34,18 @@ namespace CSC260_Final {
             };
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    AssignEvent(_btnArr[i, j], i, j);
+                    AssignEvent(arr[i, j], i, j);
                 }
             }
 
-            _letterArr = new Label[] { labelA, labelB, labelC, labelD, labelE, labelF, labelG, labelH };
-            _numbArr = new Label[] { label1, label2, label3, label4, label5, label6, label7, label8 };
+            _game.Renderer.AddBtnArray(arr);
+            _game.Renderer.AddBlackCaps(blackCap);
+            _game.Renderer.AddWhiteCaps(whiteCap);
+            _game.Renderer.AddCheckLabel(labelCheck);
+            _game.Renderer.AddLetters(new Label[] { labelA, labelB, labelC, labelD, labelE, labelF, labelG, labelH });
+            _game.Renderer.AddNumbers(new Label[] { label1, label2, label3, label4, label5, label6, label7, label8 });
+
+            _game.TableHandler.AddTable(MoveTable);
 
             _game.Run();
         }
@@ -98,7 +56,7 @@ namespace CSC260_Final {
                     _game.EscapeMove();
                 }
                 else if (args.Button == MouseButtons.Left) {
-                    if (!_flipBoard)
+                    if (!_game.Flip)
                         _game.AttemptMove(i, j);
                     else
                         _game.AttemptMove(7 - i, 7 - j);
@@ -106,22 +64,12 @@ namespace CSC260_Final {
             };
         }
 
-        public static void UpdateCheckLabel (string newText) {
-            _labelCheck.Text = newText;
-        }
-
         private void undoBtn_Click(object sender, EventArgs e) {
             _game.UndoMove();
         }
 
         private void flipBtn_Click(object sender, EventArgs e) {
-            _flipBoard = !_flipBoard;
-            _game.Render();
-
-            for (int i = 0; i < 8; i++) {
-                _letterArr[i].Text = "" + (char)(65 + (_flipBoard ? (7 - i) : i));
-                _numbArr[i].Text = "" + (char)(49 + (_flipBoard ? (7 - i) : i));
-            }
+            _game.FlipBoard();
         }
 
         private void RewindAll_Click(object sender, EventArgs e) {

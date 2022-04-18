@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainCodeFiles\Board.cs" />
+    <Compile Include="MainCodeFiles\ColorSettings.cs" />
     <Compile Include="MainCodeFiles\Game.cs" />
     <Compile Include="Forms\GameScreenForm.cs">
       <SubType>Form</SubType>
@@ -54,6 +55,7 @@
     <Compile Include="Forms\GameScreenForm.Designer.cs">
       <DependentUpon>GameScreenForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainCodeFiles\MoveHandler.cs" />
     <Compile Include="MainCodeFiles\Moves.cs" />
     <Compile Include="Forms\MenuScreen.cs">
       <SubType>Form</SubType>
@@ -61,6 +63,8 @@
     <Compile Include="Forms\MenuScreen.Designer.cs">
       <DependentUpon>MenuScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainCodeFiles\RenderHandler.cs" />
+    <Compile Include="MainCodeFiles\TableHandler.cs" />
     <Compile Include="Pieces\EmptyPiece.cs" />
     <Compile Include="Pieces\Pieces.cs" />
     <Compile Include="Players\AiPlayer.cs" />
