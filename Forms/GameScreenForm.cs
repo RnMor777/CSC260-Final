@@ -6,12 +6,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace CSC260_Final {
     public partial class GameScreenForm : Form {
 
-        private Game _game;
+        private DataStore _store;
+        //public static SemaphoreSlim WorkSignal;
 
         public GameScreenForm() {
             InitializeComponent();
@@ -20,7 +22,7 @@ namespace CSC260_Final {
         private void GameScreenForm_Load(object sender, EventArgs e) {
             this.TransparencyKey = Color.Empty;
 
-            _game = new Game();
+            _store = new DataStore(this);
 
             Button[,] arr = new Button[,] {
                 { A8, B8, C8, D8, E8, F8, G8, H8},
@@ -38,54 +40,64 @@ namespace CSC260_Final {
                 }
             }
 
-            _game.Renderer.AddBtnArray(arr);
-            _game.Renderer.AddBlackCaps(blackCap);
-            _game.Renderer.AddWhiteCaps(whiteCap);
-            _game.Renderer.AddCheckLabel(labelCheck);
-            _game.Renderer.AddLetters(new Label[] { labelA, labelB, labelC, labelD, labelE, labelF, labelG, labelH });
-            _game.Renderer.AddNumbers(new Label[] { label1, label2, label3, label4, label5, label6, label7, label8 });
+            _store.Renderer.AddBtnArray(arr);
+            _store.Renderer.AddBlackCaps(blackCap);
+            _store.Renderer.AddWhiteCaps(whiteCap);
+            _store.Renderer.AddCheckLabel(labelCheck);
+            _store.Renderer.AddLetters(new Label[] { labelA, labelB, labelC, labelD, labelE, labelF, labelG, labelH });
+            _store.Renderer.AddNumbers(new Label[] { label1, label2, label3, label4, label5, label6, label7, label8 });
 
-            _game.TableHandler.AddTable(MoveTable);
+            _store.TableHandler.AddTable(MoveTable);
 
-            _game.Run();
+            _store.Renderer.Render();
+        }
+
+        public void Start() {
+            //WorkSignal = new SemaphoreSlim(0, 2);
+            //Show();
+            //Thread thr = new Thread(new ThreadStart(_store.Game.Run));
+            //thr.Start();
+            //Hide();
+            ShowDialog();
+            //thr.Abort();
         }
 
         private void AssignEvent (Button btn, int i, int j) {
             btn.MouseUp += (s, args) => {
                 if (args.Button == MouseButtons.Right) {
-                    _game.EscapeMove();
+                    _store.Game.EscapeMove();
                 }
                 else if (args.Button == MouseButtons.Left) {
-                    if (!_game.Flip)
-                        _game.AttemptMove(i, j);
+                    if (!_store.Flip)
+                        _store.Game.TakeInput(i, j);
                     else
-                        _game.AttemptMove(7 - i, 7 - j);
+                        _store.Game.TakeInput(7 - i, 7 - j);
                 }
             };
         }
 
         private void undoBtn_Click(object sender, EventArgs e) {
-            _game.UndoMove();
+            _store.Game.TakeUndo();
         }
 
         private void flipBtn_Click(object sender, EventArgs e) {
-            _game.FlipBoard();
+            _store.Game.FlipBoard();
         }
 
         private void RewindAll_Click(object sender, EventArgs e) {
-            _game.GoBack(true);
+            _store.TableHandler.GoBack(true);
         }
 
         private void ForwardAll_Click(object sender, EventArgs e) {
-            _game.GoForward(true);
+            _store.TableHandler.GoForward(true);
         }
 
         private void Rewind_Click(object sender, EventArgs e) {
-            _game.GoBack(false);
+            _store.TableHandler.GoBack(false);
         }
 
         private void Forward_Click(object sender, EventArgs e) {
-            _game.GoForward(false);
+            _store.TableHandler.GoForward(false);
         }
     }
 }

@@ -7,90 +7,52 @@ using System.Windows.Forms;
 
 namespace CSC260_Final {
     internal class Game {
-        private Board _board;
-        private RenderHandler _renderer;
-        private TableHandler _tableHandler;
-        private List<IPlayer> _players;
-        private ColorSettings _colorSettings;
 
-        private string _playerTurn;
-        private bool _flipBoard;
-        private bool _block;
-        private int _movesMade;
+        private DataStore _store;
 
-
-        private int _halfmoves;
-        private Pieces _activePiece;
-        private List<(int i, int j)> _activeMoves;
-        private Stack<Moves> _previousMoves;
-        private int _locationPrevView;
-
-
-        public bool Flip {
-            get { return _flipBoard; }
+        public Game(DataStore store) {
+            _store = store;
         }
 
-        public bool Block {
-            get { return _block; }
-            set { _block = value; }
+        public void Run() { 
+            _store.Renderer.Render();
+            //Moves moveMade;
+            //while (true) {
+             //   moveMade = CurrentPlayer.TakeTurn();
+
+              //  PlayerTurn = FlipColor(PlayerTurn);
+               // MovesMade += 1;
+                //Renderer.Render();
+            //}
         }
 
-        public int MovesMade {
-            get { return _movesMade; }
+        public void TakeInput(int i, int j) {
+            if (_store.CurrentPlayer.GetType() != typeof(AiPlayer) && !_store.Block) 
+                if (((HumanPlayer)_store.CurrentPlayer).AttemptMove(i, j)) {
+                    _store.PlayerTurn = FlipColor(_store.PlayerTurn);
+                    _store.MovesMade++;
+                    _store.Renderer.Render();
+                }
         }
 
-        public Board Board {
-            get { return _board; }
-        }
-
-        public RenderHandler Renderer {
-            get { return _renderer; }
-        }
-
-        public TableHandler TableHandler {
-            get { return _tableHandler; }
-        }
-
-        public ColorSettings ColorSettings {
-            get { return _colorSettings; }
-        } 
-
-        public IPlayer Player1 {
-            get { return _players.Where(p => p.Id == 1).First(); }
-        }
-
-        public IPlayer Player2 {
-            get { return _players.Where(p => p.Id == 2).First(); }
-        }
-
-        public Game () {
-            _board = new Board ();
-            _renderer = new RenderHandler(this);
-            _tableHandler = new TableHandler(this);
-            _colorSettings = new ColorSettings();
-            //Dictionary<String, int> whiteCaptures = new Dictionary<String, int> { { "Pawn", 0 }, { "Rook", 0 }, { "Bishop", 0 }, { "Knight", 0}, { "Queen", 0} };
-            //Dictionary<String, int> blackCaptures = new Dictionary<String, int> { { "Pawn", 0 }, { "Rook", 0 }, { "Bishop", 0 }, { "Knight", 0}, { "Queen", 0} };
-            //_captures = new Dictionary<String, Dictionary<String, int>> { { "White", whiteCaptures}, { "Black", blackCaptures } };
-            _halfmoves = 0;
-            _previousMoves = new Stack<Moves> ();
-            _playerTurn = "White";
-            _movesMade = 0;
-            _block = false;
-            _locationPrevView = 0;
-        }
-
-        public void Run () {
-            _renderer.Render();
+        public void TakeUndo() {
+            if (!_store.Block && _store.MovesMade > 0) {
+                _store.MoveHandler.UndoMove();
+                _store.MovesMade--;
+                _store.TableHandler.RemoveTop();
+            }
+            _store.Renderer.Render();
         }
 
         public void EscapeMove () {
-            _activePiece = null;
-            _renderer.Render();
+            if (_store.CurrentPlayer.GetType() != typeof(AiPlayer) && !_store.Block) 
+                ((HumanPlayer)_store.CurrentPlayer).ActivePiece = null;
+            _store.Renderer.Render();
         }
 
         public void FlipBoard () {
-            _flipBoard = !_flipBoard;
-            _renderer.Render();
+            _store.Flip = !_store.Flip;
+            _store.Renderer.Render();
         }
 
         public static string CreateFen(Board board) {

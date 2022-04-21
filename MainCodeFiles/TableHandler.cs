@@ -8,10 +8,12 @@ using System.Windows.Forms;
 namespace CSC260_Final {
     internal class TableHandler {
         private TableLayoutPanel _moveTable;
-        private Game _game;
+        private DataStore _store;
+        private int _locationPrevView;
 
-        public TableHandler(Game game) {
-            _game = game;
+        public TableHandler(DataStore game) {
+            _locationPrevView = 0;
+            _store = game;
         }
 
         public void AddTable(TableLayoutPanel table) {
@@ -35,73 +37,83 @@ namespace CSC260_Final {
             }
             
             Label addMove = new Label();
-            addMove.BackColor = _game.ColorSettings.Curr;
+            addMove.BackColor = _store.ColorSettings.Curr;
             addMove.Height = 25;
             addMove.Text = move.PGN;
             addMove.Name = "" + movesMade;
-            AddEventMove(movesMade, addMove);
+            AddEventMove(movesMade, addMove, move);
             _moveTable.Controls.Add(addMove, movesMade % 2 + 1, movesMade / 2);
             _moveTable.HorizontalScroll.Visible = false;
         }
 
-        public void AddEventMove (int pos, Label label) {
+        public void RemoveTop() {
+            int count = _moveTable.Controls.Count - 1;
+            _moveTable.Controls.RemoveAt(count);
+            if (_store.MovesMade % 2 == 0)
+                _moveTable.Controls.RemoveAt(count - 1);
+
+            if (_moveTable.Controls.Count > 0)
+                _moveTable.Controls[_moveTable.Controls.Count - 1].BackColor = _store.ColorSettings.Curr;
+        }
+
+        public void AddEventMove (int pos, Label label, Moves move) {
             label.Click += (s, e) => {
                 foreach (Label x in _moveTable.Controls) {
                     x.BackColor = System.Drawing.Color.Transparent;
                 }
-                if (pos == _game.MovesMade-1) {
-                    _game.Block = false;
-                    label.BackColor = _game.ColorSettings.Curr;
+                if (pos == _store.MovesMade-1) {
+                    _store.Block = false;
+                    label.BackColor = _store.ColorSettings.Curr;
                 }
                 else {
-                    _game.Block = true;
-                    label.BackColor = _game.ColorSettings.Prev;
+                    _store.Block = true;
+                    label.BackColor = _store.ColorSettings.Prev;
                 }
-                _locationPrevView = _game.MovesMade - pos - 1;
-                _game.Renderer.Render(new Board(_previousMoves.ElementAt(_previousMoves.Count - pos - 1).FEN));
+                _locationPrevView = _store.MovesMade - pos - 1;
+                _store.Renderer.Render(new Board(move.FEN));
             };
         }
 
         public void GoBack(bool all) {
-            _game.Block = true;
+            _store.Block = true;
             foreach (Label x in _moveTable.Controls) {
                 x.BackColor = System.Drawing.Color.Transparent;
             }
 
             if (all) {
-                _game.Renderer.Render(new Board());
-                _locationPrevView = _game.MovesMade;
+                _store.Renderer.Render(new Board());
+                _locationPrevView = _store.MovesMade;
             }
-            else if (_locationPrevView < _game.MovesMade-1) {
+            else if (_locationPrevView < _store.MovesMade-1) {
                 _locationPrevView++;
-                _game.Renderer.Render(new Board(_previousMoves.ElementAt(_locationPrevView).FEN));
-                _moveTable.Controls.Find("" + (_game.MovesMade - _locationPrevView - 1), false)[0].BackColor = nordPrev;
+                _store.Renderer.Render(new Board(_store.MoveHandler.MoveAt(_locationPrevView).FEN));
+                _moveTable.Controls.Find("" + (_store.MovesMade - _locationPrevView - 1), false)[0].BackColor = _store.ColorSettings.Prev;
             }
             else {
-                _locationPrevView = _game.MovesMade;
-                _game.Renderer.Render(new Board());
+                _locationPrevView = _store.MovesMade;
+                _store.Renderer.Render(new Board());
             }
         }
 
         public void GoForward (bool all) {
-            _game.Block = true;
+            _store.Block = true;
             foreach (Label x in _moveTable.Controls) {
                 x.BackColor = System.Drawing.Color.Transparent;
             }
             if (all) {
-                _game.Renderer.Render();
-                _game.Block = false;
+                _store.Renderer.Render();
+                _store.Block = false;
                 _locationPrevView = 0;
-                _moveTable.Controls.Find("" + (_game.MovesMade - _locationPrevView - 1), false)[0].BackColor = _game.ColorSettings.Curr;
+                _moveTable.Controls.Find("" + (_store.MovesMade - _locationPrevView - 1), false)[0].BackColor = _store.ColorSettings.Curr;
             }
             else if (_locationPrevView > 0) {
                 _locationPrevView--;
-                _game.Renderer.Render(new Board(_previousMoves.ElementAt(_locationPrevView).FEN));
-                _moveTable.Controls.Find("" + (_game.MovesMade - _locationPrevView - 1), false)[0].BackColor = _game.ColorSettings.Prev;
+                _store.Renderer.Render(new Board(_store.MoveHandler.MoveAt(_locationPrevView).FEN));
+                _moveTable.Controls.Find("" + (_store.MovesMade - _locationPrevView - 1), false)[0].BackColor = _store.ColorSettings.Prev;
             }
-            if (_locationPrevView == 0 && _game.MovesMade != 0) {
-                _game.Block = false;
-                _moveTable.Controls.Find("" + (_game.MovesMade - _locationPrevView - 1), false)[0].BackColor = _game.ColorSettings.Curr;
+            if (_locationPrevView == 0 && _store.MovesMade != 0) {
+                _store.Block = false;
+                _moveTable.Controls.Find("" + (_store.MovesMade - _locationPrevView - 1), false)[0].BackColor = _store.ColorSettings.Curr;
             }
         }
     }

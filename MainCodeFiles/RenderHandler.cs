@@ -13,11 +13,11 @@ namespace CSC260_Final {
         private Label _blackCaps;
         private Label[] _letterArr;
         private Label[] _numbArr;
-        private Game _game;
+        private DataStore _store;
         private readonly Dictionary<String, char> _symbols = new Dictionary<string, char> { { "Pawn", '♟' }, { "Knight", '♞' }, { "Queen", '♛' }, { "Bishop", '♝' }, { "Rook", '♜' } };
 
-        public RenderHandler(Game game) {
-            _game = game;
+        public RenderHandler(DataStore game) {
+            _store = game;
         }
 
         public void AddWhiteCaps (Label label) {
@@ -45,33 +45,50 @@ namespace CSC260_Final {
         }
 
         public void Render () {
-            Render(_game.Board);
+            Render(_store.Board);
         }
 
         public void Render (Board board) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    if (!_game.Flip) {
+                    if (!_store.Flip) {
                         _btnArr[i, j].Image = board.PieceAt((i, j)).Color != "null" ? board.PieceAt((i, j)).Image : null;
                     }
                     else {
                         _btnArr[i, j].Image = board.PieceAt((7-i, 7-j)).Color != "null" ? board.PieceAt((7-i, 7-j)).Image : null;
                     }
-                    _btnArr[i, j].BackColor = (i + j) % 2 == 0 ? _game.ColorSettings.White : _game.ColorSettings.Black;
+                    _btnArr[i, j].BackColor = (i + j) % 2 == 0 ? _store.ColorSettings.White : _store.ColorSettings.Black;
                 }
-                _letterArr[i].Text = "" + (char)(65 + (_game.Flip ? (7 - i) : i));
-                _numbArr[i].Text = "" + (char)(49 + (_game.Flip ? (7 - i) : i));
+                _letterArr[i].Text = "" + (char)(65 + (_store.Flip ? (7 - i) : i));
+                _numbArr[i].Text = "" + (char)(49 + (_store.Flip ? (7 - i) : i));
             }
 
             StringBuilder labText = new StringBuilder();
-            foreach (var x in _game.Player1.Captures) 
+            foreach (var x in _store.Player1.Captures) 
                 labText.Append(_symbols[x.Key], x.Value);
-            _whiteCaps.Text = labText.ToString();
+
+            //_whiteCaps.Invoke((MethodInvoker)delegate {
+                _whiteCaps.Text = labText.ToString();
+            //});
 
             labText = new StringBuilder();
-            foreach (var x in _game.Player2.Captures) 
+            foreach (var x in _store.Player2.Captures) 
                 labText.Append(_symbols[x.Key], x.Value);
-            _blackCaps.Text = labText.ToString();
+
+            //_blackCaps.Invoke((MethodInvoker)delegate {
+                _blackCaps.Text = labText.ToString();
+            //});
+        }
+
+        public void Render (List<(int i, int j)> moves) {
+            foreach ((int i, int j) in moves) {
+                int x = _store.Flip ? 7 - i : i;
+                int y = _store.Flip ? 7 - j : j;
+
+                _btnArr[x, y].BackColor = _store.ColorSettings.Green;
+                if (_store.Board.PieceAt((i,j)).Color != "null")
+                    _btnArr[x, y].BackColor = _store.ColorSettings.Red;
+            }
         }
 
         public void UpdateCheckLabel (string newText) {

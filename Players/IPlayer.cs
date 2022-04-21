@@ -10,5 +10,10 @@ namespace CSC260_Final {
         string Name { get; }
         int Id { get; }
         string Color { get; }
+
+        void AddCapture(string name);
+        void RemoveCapture(string name);
+        //Task<Moves> TakeTurn();
+        Moves TakeTurn();
     }
 }

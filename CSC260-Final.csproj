@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="MainCodeFiles\Board.cs" />
     <Compile Include="MainCodeFiles\ColorSettings.cs" />
+    <Compile Include="MainCodeFiles\DataStore.cs" />
     <Compile Include="MainCodeFiles\Game.cs" />
     <Compile Include="Forms\GameScreenForm.cs">
       <SubType>Form</SubType>

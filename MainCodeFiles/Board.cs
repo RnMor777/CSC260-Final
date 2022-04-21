@@ -141,74 +141,15 @@ namespace CSC260_Final {
             return _piecesList.Where(p => p.Color == color && p.Name == "King").First().Position;
         }
 
-        private void CalcCheck(string color) {
+        public bool CalcCheck(string color) {
             (int i, int j) kingPos = KingPosition(color);
             string opColor = Game.FlipColor(color);
             _inCheck[color] = _piecesList.Where(p => p.Color == opColor).Any(p => p.Moves(this, color, true).Contains(kingPos));
+            return _inCheck[color];
         }
 
-        private bool CheckMate (string color) {
+        public bool CheckMate (string color) {
             return !_piecesList.Where(p => p.Color == color).ToList().Any(p => p.Moves(this, color, false).Count > 0);
-        }
-
-        public Dictionary<string, bool> MovePiece (Pieces start, Pieces destination) {
-            Dictionary<string, bool> flags = new Dictionary<string, bool>();
-            string opColor = Game.FlipColor(start.Color);
-            int x = start.CurrentRow;
-            int y = start.CurrentCol;
-            SetPieceAt(destination.Position, start);
-            SetPieceAt((x, y), null);
-            CalcCheck(opColor);
-
-            flags["In Check"] = InCheck(opColor);
-            flags["Checkmate"] = false; 
-            flags["Captured"] = destination.Color != "null";
-            flags["EnPassant"] = false;
-            flags["Castle"] = false;
-
-            if (destination.Position == _enPassantSquare) { 
-                SetPieceAt((x + (destination.CurrentRow - x) / 2, destination.CurrentCol), null);
-                flags["Captured"] = true;
-                flags["EnPassant"] = true;
-            }
-
-            if (start.Name == "King" && Math.Abs(y-start.CurrentCol) == 2) {
-                if (start.CurrentCol < y) {
-                    SetPieceAt((start.CurrentRow, start.CurrentCol + 1), PieceAt((start.CurrentRow, 0)));
-                    SetPieceAt((start.CurrentRow, 0), null);
-                }
-                else {
-                    SetPieceAt((start.CurrentRow, start.CurrentCol - 1), PieceAt((start.CurrentRow, 7)));
-                    SetPieceAt((start.CurrentRow, 7), null);
-                }
-                ((King)start).CastleLeft = false;
-                ((King)start).CastleRight = false;
-                flags["Castle"] = true;
-            }
-
-            if (start.Name == "King") {
-                ((King)start).CastleLeft = false;
-                ((King)start).CastleRight = false;
-            }
-
-            if (start.Name == "Rook") {
-                if (y == 0) {
-                    ((King)PieceAt(KingPosition(start.Color))).CastleLeft = false;
-                }
-                else if (y == 7) {
-                    ((King)PieceAt(KingPosition(start.Color))).CastleRight = false;
-                }
-            }
-
-            if (start.Name.Equals("Pawn") && Math.Abs(destination.CurrentRow - x) == 2) 
-                _enPassantSquare = (x + (destination.CurrentRow - x) / 2, start.CurrentCol);
-            else 
-                _enPassantSquare = (-1, -1);
-
-            if (flags["In Check"]) 
-                flags["Checkmate"] = CheckMate(opColor);
-
-            return flags;
         }
     }
 }

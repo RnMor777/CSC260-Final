@@ -41,6 +41,17 @@ namespace CSC260_Final {
             _color = "Black";
         }
 
+        public void AddCapture (string name) {
+            _captures[name]++;
+        }
+
+        public void RemoveCapture (string name) {
+            _captures[name]--;
+        }
+
+        public Moves TakeTurn () {
+            return null;
+        }
 
         public (Pieces x, (int i, int j)) TakeTurn (Board board, Game game) {
             _board = new Board(board);
@@ -150,8 +161,8 @@ namespace CSC260_Final {
         }
 
         private void MakeMove (Pieces piece, (int i, int j) dest) {
-            _previousMoves.Push(new Moves(piece, _board.PieceAt(dest), _board.EnPassant));
-            _board.MovePiece(piece, _board.PieceAt(dest));
+            //_previousMoves.Push(new Moves(piece, _board.PieceAt(dest), _board.EnPassant));
+            //_board.MovePiece(piece, _board.PieceAt(dest));
         }
 
         private void UndoMove () {
