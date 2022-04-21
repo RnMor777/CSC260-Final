@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSC260_Final {
     internal class MoveHandler {
-        public DataStore _store;
+        private DataStore _store;
         private Stack<Moves> _previousMoves;
 
         public MoveHandler(DataStore game) {

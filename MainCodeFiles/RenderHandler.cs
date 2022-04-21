@@ -14,34 +14,34 @@ namespace CSC260_Final {
         private Label[] _letterArr;
         private Label[] _numbArr;
         private DataStore _store;
-        private readonly Dictionary<String, char> _symbols = new Dictionary<string, char> { { "Pawn", '♟' }, { "Knight", '♞' }, { "Queen", '♛' }, { "Bishop", '♝' }, { "Rook", '♜' } };
+        private readonly Dictionary<string, char> _symbols = new Dictionary<string, char> { { "Pawn", '♟' }, { "Knight", '♞' }, { "Queen", '♛' }, { "Bishop", '♝' }, { "Rook", '♜' } };
+
+        public Label WhiteCaps {
+            set { _whiteCaps = value; }
+        }
+
+        public Label BlackCaps {
+            set { _blackCaps = value; }
+        }
+
+        public Label CheckLabel {
+            set { _labelCheck = value; }
+        }
+
+        public Button[,] ButtonArr {
+            set { _btnArr = value; }
+        }
+
+        public Label[] LetterArr {
+            set { _letterArr = value; }
+        }
+
+        public Label[] NumbArr {
+            set { _numbArr = value; }
+        }
 
         public RenderHandler(DataStore game) {
             _store = game;
-        }
-
-        public void AddWhiteCaps (Label label) {
-            _whiteCaps = label;
-        }
-
-        public void AddBlackCaps (Label label) {
-            _blackCaps = label;
-        }
-
-        public void AddCheckLabel (Label label) {
-            _labelCheck = label;
-        }
-
-        public void AddBtnArray (Button[,] arr) {
-            _btnArr = arr;
-        }
-
-        public void AddLetters (Label[] label) {
-            _letterArr = label;
-        }
-
-        public void AddNumbers (Label[] label) {
-            _numbArr = label;
         }
 
         public void Render () {

@@ -15,7 +15,7 @@ namespace CSC260_Final {
         private MoveHandler _moveHandler;
         private GameScreenForm _form;
 
-        private static volatile string _playerTurn;
+        private string _playerTurn;
         private bool _flipBoard;
         private bool _block;
         private int _movesMade;

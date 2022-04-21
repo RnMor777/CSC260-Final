@@ -16,7 +16,6 @@ namespace CSC260_Final {
         private Weights _weight;
         private bool _isWhite;
         private Stack<Moves> _previousMoves;
-        private Game _game;
         Dictionary<string, int> _captures = new Dictionary<String, int> { { "Pawn", 0 }, { "Rook", 0 }, { "Bishop", 0 }, { "Knight", 0}, { "Queen", 0} };
 
         public string Name {
@@ -53,9 +52,8 @@ namespace CSC260_Final {
             return null;
         }
 
-        public (Pieces x, (int i, int j)) TakeTurn (Board board, Game game) {
+        public (Pieces x, (int i, int j)) TakeTurn (Board board) {
             _board = new Board(board);
-            _game = game;
             return MiniMaxRoot(2, true);
         }
 

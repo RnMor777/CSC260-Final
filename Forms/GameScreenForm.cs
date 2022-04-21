@@ -40,12 +40,12 @@ namespace CSC260_Final {
                 }
             }
 
-            _store.Renderer.AddBtnArray(arr);
-            _store.Renderer.AddBlackCaps(blackCap);
-            _store.Renderer.AddWhiteCaps(whiteCap);
-            _store.Renderer.AddCheckLabel(labelCheck);
-            _store.Renderer.AddLetters(new Label[] { labelA, labelB, labelC, labelD, labelE, labelF, labelG, labelH });
-            _store.Renderer.AddNumbers(new Label[] { label1, label2, label3, label4, label5, label6, label7, label8 });
+            _store.Renderer.ButtonArr = arr;
+            _store.Renderer.BlackCaps = blackCap;
+            _store.Renderer.WhiteCaps = whiteCap;
+            _store.Renderer.CheckLabel = labelCheck;
+            _store.Renderer.LetterArr = new Label[] { labelA, labelB, labelC, labelD, labelE, labelF, labelG, labelH };
+            _store.Renderer.NumbArr = new Label[] { label1, label2, label3, label4, label5, label6, label7, label8 };
 
             _store.TableHandler.AddTable(MoveTable);
 
