@@ -18,9 +18,9 @@ namespace CSC260_Final {
         }
 
         private void Play_Click(object sender, EventArgs e) {
-            GameScreenForm f = new GameScreenForm();
             Hide();
-            f.ShowDialog();
+            GameScreenForm f = new GameScreenForm();
+            f.Start();
             Close();
         }
 

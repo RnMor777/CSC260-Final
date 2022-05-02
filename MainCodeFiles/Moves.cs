@@ -49,36 +49,15 @@ namespace CSC260_Final {
             set { _fen = value; }
         }
 
-        public Moves(Pieces orig, Pieces dest, (int i, int j) enp) {
+        public Moves(Pieces orig, Pieces dest) {
             _flags = new Dictionary<string, bool>() { { "EnPassant", false}, { "Castle", false } };
-            StringBuilder tmpPgn = new StringBuilder();
             _start = orig.Copy();
             _end = dest.Copy();
+            GeneratePGN();
+        }
+
+        public void AddEnpSquare ((int i, int j) enp) {
             _enpassantSquare = enp;
-            switch (orig.Name) {
-                case "Knight":
-                    tmpPgn.Append("N");
-                    break;
-                case "Pawn":
-                    break;
-                default:
-                    tmpPgn.Append(orig.Name[0]);
-                    break;
-            }
-
-            //check for special cases
-            //To-Do
-
-            if (dest.Color != "null" && dest.Color != orig.Color) {
-                if (orig.Name.Equals("Pawn")) 
-                    tmpPgn.Append((char)(orig.CurrentCol + 97));
-                tmpPgn.Append("x");
-            }
-
-            tmpPgn.Append((char)(dest.CurrentCol + 97));
-            tmpPgn.Append((char)(8 - dest.CurrentRow + 48));
-
-            _pgn = tmpPgn;
         }
 
         public void WasCheck () {
@@ -111,6 +90,35 @@ namespace CSC260_Final {
                 _pgn.Clear();
                 _pgn.Append("O-O");
             }
+        }
+
+        private void GeneratePGN () {
+            StringBuilder tmpPgn = new StringBuilder();
+            switch (_start.Name) {
+                case "Knight":
+                    tmpPgn.Append("N");
+                    break;
+                case "Pawn":
+                    break;
+                default:
+                    tmpPgn.Append(_start.Name[0]);
+                    break;
+            }
+
+            //check for special cases
+            //To-Do
+
+            if (_end.Color != "null" && _end.Color != _start.Color) {
+                if (_start.Name.Equals("Pawn")) 
+                    tmpPgn.Append((char)(_start.CurrentCol + 97));
+                tmpPgn.Append("x");
+            }
+
+            tmpPgn.Append((char)(_end.CurrentCol + 97));
+            tmpPgn.Append((char)(8 - _end.CurrentRow + 48));
+
+            _pgn = tmpPgn;
+
         }
     }
 }

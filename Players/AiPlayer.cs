@@ -5,18 +5,34 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CSC260_Final {
-    internal class AiPlayer {
+    internal class AiPlayer : IPlayer {
 
         private Board _board;
         private string _color;
         private string _name;
         private int _points;
         private int _positions;
+        private int _id;
         private Weights _weight;
         private bool _isWhite;
         private Stack<Moves> _previousMoves;
-        private Game _game;
-        private GameScreenForm _form;
+        Dictionary<string, int> _captures = new Dictionary<String, int> { { "Pawn", 0 }, { "Rook", 0 }, { "Bishop", 0 }, { "Knight", 0}, { "Queen", 0} };
+
+        public string Name {
+            get { return _name; }
+        }
+
+        public string Color {
+            get { return _color; }
+        }
+
+        public int Id {
+            get { return _id; }
+        }
+
+        public Dictionary<string, int> Captures {
+            get { return _captures; }
+        }
 
         public AiPlayer() {
             _previousMoves = new Stack<Moves>();
@@ -24,14 +40,20 @@ namespace CSC260_Final {
             _color = "Black";
         }
 
-        public AiPlayer (GameScreenForm form) : this(){
-            _form = form;
+        public void AddCapture (string name) {
+            _captures[name]++;
         }
 
-        public (Pieces x, (int i, int j)) TakeTurn (Board board, Game game) {
+        public void RemoveCapture (string name) {
+            _captures[name]--;
+        }
+
+        public Moves TakeTurn () {
+            return null;
+        }
+
+        public (Pieces x, (int i, int j)) TakeTurn (Board board) {
             _board = new Board(board);
-            //_board = board;
-            _game = game;
             return MiniMaxRoot(2, true);
         }
 
@@ -137,8 +159,8 @@ namespace CSC260_Final {
         }
 
         private void MakeMove (Pieces piece, (int i, int j) dest) {
-            _previousMoves.Push(new Moves(piece, _board.PieceAt(dest), _board.EnPassant));
-            _board.MovePiece(piece, _board.PieceAt(dest));
+            //_previousMoves.Push(new Moves(piece, _board.PieceAt(dest), _board.EnPassant));
+            //_board.MovePiece(piece, _board.PieceAt(dest));
         }
 
         private void UndoMove () {

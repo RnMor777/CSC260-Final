@@ -6,71 +6,25 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace CSC260_Final {
     public partial class GameScreenForm : Form {
 
-        private static Button[,] _btnArr;
-        private static Label _labelCheck;
-        private static Label _whiteCaps;
-        private static Label _blackCaps;
-        private static TableLayoutPanel _moveTable;
-        private Label[] _letterArr;
-        private Label[] _numbArr;
-        private Game _game;
-        private static bool _flipBoard;
-
-        public static Button[,] BtnArr {
-            get { return _btnArr; }
-        }
-
-        public static Label WhiteCaps {
-            get { return _whiteCaps; }
-        }
-
-        public static Label BlackCaps {
-            get { return _blackCaps; }
-        }
-
-        public static TableLayoutPanel MovementTable {
-            get { return _moveTable; }
-        }
-
-        public static bool Flip {
-            get { return _flipBoard; }
-        }
+        private DataStore _store;
+        //public static SemaphoreSlim WorkSignal;
 
         public GameScreenForm() {
             InitializeComponent();
         }
 
-
         private void GameScreenForm_Load(object sender, EventArgs e) {
-            //System.Drawing.Text.PrivateFontCollection pfc = new System.Drawing.Text.PrivateFontCollection();
-            //int fontLength = Properties.Resources.FreeSerif.Length;
-            //byte[] fontdata = Properties.Resources.FreeSerif;
-            //System.IntPtr data = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontLength);
-            //System.Runtime.InteropServices.Marshal.Copy(fontdata, 0, data, fontLength);
-            //pfc.AddMemoryFont(data, fontLength);
-            //blackCap.Font = new Font(pfc.Families[0], blackCap.Font.Size);
-            //whiteCap.Font = new Font(pfc.Families[0], whiteCap.Font.Size);
-            _blackCaps = blackCap;
-            _whiteCaps = whiteCap;
-            _moveTable = MoveTable;
-            _moveTable.AutoScroll = false;
-            _moveTable.HorizontalScroll.Enabled = false;
-            _moveTable.HorizontalScroll.Visible = false;
-            _moveTable.AutoScroll = true;
-            _flipBoard = false;
-
-            //tmpbox.Text = "♜♞♝♛♚♟";
-
-            _game = new Game(this);
-
             this.TransparencyKey = Color.Empty;
-            _labelCheck = labelCheck;
-            _btnArr = new Button[,] {
+
+            _store = new DataStore(this);
+
+            Button[,] arr = new Button[,] {
                 { A8, B8, C8, D8, E8, F8, G8, H8},
                 { A7, B7, C7, D7, E7, F7, G7, H7},
                 { A6, B6, C6, D6, E6, F6, G6, H6},
@@ -82,62 +36,68 @@ namespace CSC260_Final {
             };
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    AssignEvent(_btnArr[i, j], i, j);
+                    AssignEvent(arr[i, j], i, j);
                 }
             }
 
-            _letterArr = new Label[] { labelA, labelB, labelC, labelD, labelE, labelF, labelG, labelH };
-            _numbArr = new Label[] { label1, label2, label3, label4, label5, label6, label7, label8 };
+            _store.Renderer.ButtonArr = arr;
+            _store.Renderer.BlackCaps = blackCap;
+            _store.Renderer.WhiteCaps = whiteCap;
+            _store.Renderer.CheckLabel = labelCheck;
+            _store.Renderer.LetterArr = new Label[] { labelA, labelB, labelC, labelD, labelE, labelF, labelG, labelH };
+            _store.Renderer.NumbArr = new Label[] { label1, label2, label3, label4, label5, label6, label7, label8 };
 
-            _game.Run();
+            _store.TableHandler.AddTable(MoveTable);
+
+            _store.Renderer.Render();
+        }
+
+        public void Start() {
+            //WorkSignal = new SemaphoreSlim(0, 2);
+            //Show();
+            //Thread thr = new Thread(new ThreadStart(_store.Game.Run));
+            //thr.Start();
+            //Hide();
+            ShowDialog();
+            //thr.Abort();
         }
 
         private void AssignEvent (Button btn, int i, int j) {
             btn.MouseUp += (s, args) => {
                 if (args.Button == MouseButtons.Right) {
-                    _game.EscapeMove();
+                    _store.Game.EscapeMove();
                 }
                 else if (args.Button == MouseButtons.Left) {
-                    if (!_flipBoard)
-                        _game.AttemptMove(i, j);
+                    if (!_store.Flip)
+                        _store.Game.TakeInput(i, j);
                     else
-                        _game.AttemptMove(7 - i, 7 - j);
+                        _store.Game.TakeInput(7 - i, 7 - j);
                 }
             };
         }
 
-        public static void UpdateCheckLabel (string newText) {
-            _labelCheck.Text = newText;
-        }
-
         private void undoBtn_Click(object sender, EventArgs e) {
-            _game.UndoMove();
+            _store.Game.TakeUndo();
         }
 
         private void flipBtn_Click(object sender, EventArgs e) {
-            _flipBoard = !_flipBoard;
-            _game.Render();
-
-            for (int i = 0; i < 8; i++) {
-                _letterArr[i].Text = "" + (char)(65 + (_flipBoard ? (7 - i) : i));
-                _numbArr[i].Text = "" + (char)(49 + (_flipBoard ? (7 - i) : i));
-            }
+            _store.Game.FlipBoard();
         }
 
         private void RewindAll_Click(object sender, EventArgs e) {
-            _game.GoBack(true);
+            _store.TableHandler.GoBack(true);
         }
 
         private void ForwardAll_Click(object sender, EventArgs e) {
-            _game.GoForward(true);
+            _store.TableHandler.GoForward(true);
         }
 
         private void Rewind_Click(object sender, EventArgs e) {
-            _game.GoBack(false);
+            _store.TableHandler.GoBack(false);
         }
 
         private void Forward_Click(object sender, EventArgs e) {
-            _game.GoForward(false);
+            _store.TableHandler.GoForward(false);
         }
     }
 }
