@@ -24,5 +24,10 @@ Things for the future:
  * Concede/Tie buttons
  * In game menu
 
-Here is a picture of the game.
+Here is a picture of the game: 
+
 ![Gamescreen image](image.png)
+
+Here is the class diagram of the code:
+
+![Class diagram](FinalDiagram.png)
